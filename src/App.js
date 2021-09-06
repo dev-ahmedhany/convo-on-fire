@@ -13,10 +13,10 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AccountCircle, Notifications } from "@material-ui/icons";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth, signOut } from "firebase/auth";
 import Login from "./pages/Login";
+import Chat from "./pages/Chat";
 
 const theme = createTheme({
   overrides: {
@@ -40,17 +40,12 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
   const menuId = "account-menu";
 
   const auth = getAuth();
@@ -93,7 +88,7 @@ function App() {
                   id={menuId}
                   keepMounted
                   transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={isMenuOpen}
+                  open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
                   <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
@@ -106,6 +101,7 @@ function App() {
                     Log out
                   </MenuItem>
                 </Menu>
+                <Chat />
               </div>
             </>
           ) : (
