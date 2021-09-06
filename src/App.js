@@ -1,10 +1,18 @@
+import React from "react";
 import {
-  Button,
   createTheme,
   CssBaseline,
   MuiThemeProvider,
   Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Badge,
+  MenuItem,
+  Menu,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { AccountCircle, Notifications } from "@material-ui/icons";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth, signOut } from "firebase/auth";
@@ -23,7 +31,28 @@ const theme = createTheme({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  grow: {
+    flexGrow: 1,
+  },
+}));
+
 function App() {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = "account-menu";
+
   const auth = getAuth();
   const [user, loading] = useAuthState(auth);
 
@@ -34,14 +63,50 @@ function App() {
         <>
           {user?.email ? (
             <>
-              <Typography>Convo on Fire</Typography>
-              <Button
-                onClick={() => {
-                  signOut(auth);
-                }}
-              >
-                Log out
-              </Button>
+              <div className={classes.grow}>
+                <AppBar position="static">
+                  <Toolbar>
+                    <Typography variant="h6" noWrap>
+                      Convo On Fire
+                    </Typography>
+                    <div className={classes.grow} />
+                    <IconButton aria-label="notifications" color="inherit">
+                      <Badge badgeContent={17} color="secondary">
+                        <Notifications />
+                      </Badge>
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  </Toolbar>
+                </AppBar>
+                <Menu
+                  anchorEl={anchorEl}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  id={menuId}
+                  keepMounted
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  open={isMenuOpen}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleMenuClose();
+                      signOut(auth);
+                    }}
+                  >
+                    Log out
+                  </MenuItem>
+                </Menu>
+              </div>
             </>
           ) : (
             <Login />
