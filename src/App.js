@@ -10,13 +10,14 @@ import {
   Badge,
   MenuItem,
   Menu,
+  Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AccountCircle, Notifications } from "@material-ui/icons";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth, signOut } from "firebase/auth";
 import Login from "./pages/Login";
-import Chat from "./pages/Chat";
+import Home from "./pages/Home";
 
 const theme = createTheme({
   overrides: {
@@ -58,50 +59,56 @@ function App() {
         <>
           {user?.email ? (
             <>
-              <div className={classes.grow}>
-                <AppBar position="static">
-                  <Toolbar>
-                    <Typography variant="h6" noWrap>
-                      Convo On Fire
-                    </Typography>
-                    <div className={classes.grow} />
-                    <IconButton aria-label="notifications" color="inherit">
-                      <Badge badgeContent={17} color="secondary">
-                        <Notifications />
-                      </Badge>
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      aria-label="account of current user"
-                      aria-controls={menuId}
-                      aria-haspopup="true"
-                      onClick={handleProfileMenuOpen}
-                      color="inherit"
+              <div>
+                <Box height="100vh" display="flex" flexDirection="column">
+                  <Box>
+                    <AppBar position="static">
+                      <Toolbar>
+                        <Typography variant="h6" noWrap>
+                          Convo On Fire
+                        </Typography>
+                        <div className={classes.grow} />
+                        <IconButton aria-label="notifications" color="inherit">
+                          <Badge badgeContent={17} color="secondary">
+                            <Notifications />
+                          </Badge>
+                        </IconButton>
+                        <IconButton
+                          edge="end"
+                          aria-label="account of current user"
+                          aria-controls={menuId}
+                          aria-haspopup="true"
+                          onClick={handleProfileMenuOpen}
+                          color="inherit"
+                        >
+                          <AccountCircle />
+                        </IconButton>
+                      </Toolbar>
+                    </AppBar>
+                    <Menu
+                      anchorEl={anchorEl}
+                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                      id={menuId}
+                      keepMounted
+                      transformOrigin={{ vertical: "top", horizontal: "right" }}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
                     >
-                      <AccountCircle />
-                    </IconButton>
-                  </Toolbar>
-                </AppBar>
-                <Menu
-                  anchorEl={anchorEl}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  id={menuId}
-                  keepMounted
-                  transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      handleMenuClose();
-                      signOut(auth);
-                    }}
-                  >
-                    Log out
-                  </MenuItem>
-                </Menu>
-                <Chat />
+                      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          handleMenuClose();
+                          signOut(auth);
+                        }}
+                      >
+                        Log out
+                      </MenuItem>
+                    </Menu>
+                  </Box>
+                  <Box flex={1} overflow="auto">
+                    <Home />
+                  </Box>
+                </Box>
               </div>
             </>
           ) : (
