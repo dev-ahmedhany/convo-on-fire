@@ -100,7 +100,7 @@ const Chat = ({ user }) => {
               </>
             )}
             <Box display="flex" flex={1} className={classes.messageArea}>
-              <ChatWrapper data={messages} userId={user.uid} />
+              <ChatWrapper data={messages} userId={user.uid} users={users} />
             </Box>
             <div>
               <Divider />

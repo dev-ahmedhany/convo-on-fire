@@ -2,54 +2,47 @@ import { Paper, Typography } from "@material-ui/core";
 import React from "react";
 import ChatMsg from "../ChatMsg";
 
-const ChatWrapper = ({ data, userId }) => {
+const ChatWrapper = ({ data, userId, users }) => {
   const messages = [];
+
+  const getDateObject = (msg) => {
+    return {
+      type: "Date",
+      date: msg.date.toLocaleString("en-US", {
+        day: "numeric",
+        month: "short",
+        hour: "numeric",
+        minute: "numeric",
+      }),
+    };
+  };
+
+  const getMessageObject = (msg) => {
+    return {
+      ...msg,
+      name: users.find((user) => user.id === msg.sentBy)?.displayName,
+      avatar: users.find((user) => user.id === msg.sentBy)?.photoURL,
+      messages: [msg.message],
+      side: userId === msg.sentBy ? "right" : "left",
+    };
+  };
 
   data.forEach((msg) => {
     if (messages.length === 0) {
-      messages.push({
-        type: "Date",
-        date: msg.date.toLocaleString("en-US", {
-          day: "numeric",
-          //year: 'numeric',
-          month: "short",
-          hour: "numeric",
-          minute: "numeric",
-        }),
-      });
-      messages.push({
-        ...msg,
-        messages: [msg.message],
-        side: userId === msg.sentBy ? "right" : "left",
-      });
+      messages.push(getDateObject(msg));
+      messages.push(getMessageObject(msg));
     } else {
       if (
         msg.date.getTime() - messages[messages.length - 1].date.getTime() >
         10 * 60 * 1000
       ) {
-        messages.push({
-          type: "Date",
-          date: msg.date.toLocaleString("en-US", {
-            day: "numeric",
-            month: "short",
-            hour: "numeric",
-            minute: "numeric",
-          }),
-        });
-        messages.push({
-          ...msg,
-          messages: [msg.message],
-          side: userId === msg.sentBy ? "right" : "left",
-        });
+        messages.push(getDateObject(msg));
+        messages.push(getMessageObject(msg));
       } else {
         if (messages[messages.length - 1].sentBy === msg.sentBy) {
           messages[messages.length - 1].messages.push(msg.message);
         } else {
-          messages.push({
-            ...msg,
-            messages: [msg.message],
-            side: userId === msg.sentBy ? "right" : "left",
-          });
+          messages.push(getMessageObject(msg));
         }
       }
     }
