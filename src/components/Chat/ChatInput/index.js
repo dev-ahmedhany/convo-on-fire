@@ -16,6 +16,7 @@ function ChatInput({ handleTyping, handleSendMessage }) {
 
   const handleSendWithEnter = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       handleSend();
     }
   };
@@ -38,7 +39,7 @@ function ChatInput({ handleTyping, handleSendMessage }) {
           fullWidth
           disableUnderline
           inputProps={{ style: { padding: "18px 20px 18px" } }}
-          onKeyUp={handleSendWithEnter}
+          onKeyDown={handleSendWithEnter}
           endAdornment={
             <InputAdornment position="end">
               <Fab
