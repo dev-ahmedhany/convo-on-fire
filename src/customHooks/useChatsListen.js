@@ -27,7 +27,6 @@ const useChatsListen = (user) => {
           chatArray.push({ id: doc.id, ...doc.data() });
         });
         setChats(chatArray);
-        console.log("Current chats in for this user: ", chatArray);
         setDoc(doc(db, "users", user.uid), {
           displayName: user.displayName,
           photoURL: user.photoURL,

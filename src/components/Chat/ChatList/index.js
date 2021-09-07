@@ -5,11 +5,18 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 
-const ChatList = ({ users }) => {
+const ChatList = ({ users, onClick, selectedId }) => {
   return (
     <List>
       {users.map((item) => (
-        <ListItem button key={item.id}>
+        <ListItem
+          button
+          key={item.id}
+          onClick={(e) => {
+            onClick(e, item.id);
+          }}
+          selected={selectedId === item.id}
+        >
           <ListItemIcon>
             <Avatar alt={item.displayName} src={item.photoURL} />
           </ListItemIcon>

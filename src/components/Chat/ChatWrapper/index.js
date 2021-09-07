@@ -59,20 +59,20 @@ const ChatWrapper = ({ data, userId }) => {
     <Paper elevation={0}>
       {messages.map((msg) =>
         msg.type === "Date" ? (
-          <>
-            <Typography
-              style={{
-                fontSize: "11px",
-                textAlign: "center",
-                fontWeight: "bold",
-                color: "#8a8d91",
-              }}
-            >
-              {msg.date}
-            </Typography>
-          </>
+          <Typography
+            key={msg.date}
+            style={{
+              fontSize: "11px",
+              textAlign: "center",
+              fontWeight: "bold",
+              color: "#8a8d91",
+            }}
+          >
+            {msg.date}
+          </Typography>
         ) : (
           <ChatMsg
+            key={msg.id}
             side={msg.side}
             name={msg.name}
             date={msg.date}
