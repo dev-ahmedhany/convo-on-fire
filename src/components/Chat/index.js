@@ -29,6 +29,61 @@ const useStyles = makeStyles({
   },
 });
 
+const data = [
+  {
+    uid: "uid123",
+    name: "Ahmed Hany",
+    avatar: "",
+    message: "Hi Jenny, How r u today?",
+    date: new Date(Date.now() - 60 * 60 * 1000),
+  },
+  {
+    uid: "uid123",
+    name: "Ahmed Hany",
+    avatar: "",
+    message: "Did you train yesterday",
+    date: new Date(Date.now() - 59 * 60 * 1000),
+  },
+  {
+    uid: "uid123",
+    name: "Ahmed Hany",
+    avatar: "",
+    message:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.",
+    date: new Date(Date.now() - 58 * 60 * 1000),
+  },
+  {
+    uid: "uid456",
+    name: "Hemmy",
+    avatar: "",
+    message: "Great! What's about you?",
+    date: new Date(Date.now() - 57 * 60 * 1000),
+  },
+  {
+    uid: "uid456",
+    name: "Hemmy",
+    avatar: "",
+    message: "Of course I did. Speaking of which check this out",
+    date: new Date(Date.now() - 56 * 60 * 1000),
+  },
+  {
+    uid: "uid123",
+    name: "Ahmed Hany",
+    avatar: "",
+    message: "Im good.",
+    date: new Date(Date.now() - 45 * 60 * 1000),
+  },
+  {
+    uid: "uid123",
+    name: "Ahmed Hany",
+    avatar: "",
+    message: "See u later.",
+    date: new Date(Date.now() - 44 * 60 * 1000),
+  },
+];
+
+const userId = "uid456";
+
 const Chat = () => {
   const classes = useStyles();
 
@@ -91,7 +146,7 @@ const Chat = () => {
         <Grid item xs={9}>
           <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
             <Box display="flex" flex={1} className={classes.messageArea}>
-              <ChatWrapper />
+              <ChatWrapper data={data} userId={userId} />
             </Box>
             <div>
               <Divider />
