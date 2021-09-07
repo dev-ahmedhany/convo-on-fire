@@ -13,6 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
+import useUsersListen from "../../customHooks/useUsersListen";
 
 const useStyles = makeStyles({
   table: {
@@ -87,6 +88,7 @@ const userId = "uid456";
 
 const Chat = ({ user }) => {
   const classes = useStyles();
+  const { users } = useUsersListen(user);
 
   return (
     <Box display="flex" style={{ height: "100%" }}>
@@ -110,7 +112,7 @@ const Chat = ({ user }) => {
             />
           </Grid>
           <Divider />
-          <ChatList />
+          <ChatList users={users} />
         </Grid>
         <Grid item xs={9}>
           <Box display="flex" flexDirection="column" style={{ height: "100%" }}>

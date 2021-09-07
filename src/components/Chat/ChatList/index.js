@@ -5,27 +5,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 
-const ChatList = () => {
-  const data = [
-    {
-      id: "u123",
-      displayName: "Remy Sharp",
-      photoURL: "https://material-ui.com/static/images/avatar/1.jpg",
-    },
-    {
-      id: "u456",
-      displayName: "Alice",
-      photoURL: "https://material-ui.com/static/images/avatar/3.jpg",
-    },
-    {
-      id: "u789",
-      displayName: "Cindy Baker",
-      photoURL: "https://material-ui.com/static/images/avatar/2.jpg",
-    },
-  ];
+const ChatList = ({ users }) => {
   return (
     <List>
-      {data.map((item) => (
+      {users.map((item) => (
         <ListItem button key={item.id}>
           <ListItemIcon>
             <Avatar alt={item.displayName} src={item.photoURL} />
