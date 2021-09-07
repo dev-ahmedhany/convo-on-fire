@@ -1,12 +1,21 @@
 import React from "react";
 import { Box, Button } from "@material-ui/core";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
 
 export default function Login() {
   const auth = getAuth();
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
+    signInWithPopup(auth, provider).catch((e) => {
+      if (e.code === "auth/popup-blocked") {
+        signInWithRedirect(auth, provider);
+      }
+    });
   };
 
   return (
