@@ -6,19 +6,14 @@ import {
   collection,
   query,
   where,
-  onSnapshot,
-  doc,
   getDocs,
 } from "firebase/firestore";
 
 const useChatUser = (uid, user) => {
   const [docID, setDocID] = useState();
-  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
-    let unsubscribe = () => {};
-    if (!isListening && uid) {
-      setIsListening(true);
+    if (uid) {
       const getID = async () => {
         const db = getFirestore();
         const chatsRef = collection(db, "chats");
@@ -44,8 +39,7 @@ const useChatUser = (uid, user) => {
       };
       getID();
     }
-    return unsubscribe;
-  }, [isListening, user, uid]);
+  }, [user, uid]);
 
   return { docID };
 };

@@ -15,6 +15,7 @@ import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import useUsersListen from "../../customHooks/useUsersListen";
 import useChatUser from "../../customHooks/useChatUser";
+import useChatID from "../../customHooks/useChatID";
 
 const useStyles = makeStyles({
   table: {
@@ -32,65 +33,16 @@ const useStyles = makeStyles({
   },
 });
 
-const data = [
-  {
-    id: "1",
-    uid: "uid123",
-    name: "Ahmed Hany",
-    avatar: "",
-    message: "Hi Jenny, How r u today?",
-    date: new Date(Date.now() - 60 * 60 * 1000),
-  },
-  {
-    id: "2",
-    uid: "uid123",
-    name: "Ahmed Hany",
-    avatar: "",
-    message: "Did you train yesterday",
-    date: new Date(Date.now() - 59 * 60 * 1000),
-  },
-  {
-    id: "3",
-    uid: "uid123",
-    name: "Ahmed Hany",
-    avatar: "",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.",
-    date: new Date(Date.now() - 58 * 60 * 1000),
-  },
-  {
-    id: "4",
-    uid: "uid456",
-    name: "Hemmy",
-    avatar: "",
-    message: "Great! What's about you?",
-    date: new Date(Date.now() - 57 * 60 * 1000),
-  },
-  {
-    id: "5",
-    uid: "uid456",
-    name: "Hemmy",
-    avatar: "",
-    message: "Of course I did. Speaking of which check this out",
-    date: new Date(Date.now() - 56 * 60 * 1000),
-  },
-  {
-    id: "6",
-    uid: "uid123",
-    name: "Ahmed Hany",
-    avatar: "",
-    message: "Im good.",
-    date: new Date(Date.now() - 45 * 60 * 1000),
-  },
-  {
-    id: "7",
-    uid: "uid123",
-    name: "Ahmed Hany",
-    avatar: "",
-    message: "See u later.",
-    date: new Date(Date.now() - 44 * 60 * 1000),
-  },
-];
+// const template = [
+//   {
+//     id: "1",
+//     uid: "uid123",
+//     name: "Ahmed Hany",
+//     avatar: "",
+//     message: "Hi Jenny, How r u today?",
+//     date: new Date(Date.now() - 60 * 60 * 1000),
+//   }
+// ];
 
 const userId = "uid456";
 
@@ -98,7 +50,8 @@ const Chat = ({ user }) => {
   const classes = useStyles();
   const [selectedId, setSelectedID] = useState();
   const { users } = useUsersListen(user);
-  useChatUser(selectedId, user);
+  const {docID} = useChatUser(selectedId, user);
+  const {messages} = useChatID(docID);
 
   const selectedUser = users.find((item) => item.id === selectedId);
 
@@ -151,7 +104,7 @@ const Chat = ({ user }) => {
               </>
             )}
             <Box display="flex" flex={1} className={classes.messageArea}>
-              <ChatWrapper data={data} userId={userId} />
+              <ChatWrapper data={messages} userId={userId} />
             </Box>
             <div>
               <Divider />
