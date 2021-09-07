@@ -105,7 +105,7 @@ function App() {
                     </Menu>
                   </Box>
                   <Box flex={1} overflow="auto">
-                    <Home uid={user.uid} />
+                    <Home user={user} />
                   </Box>
                 </Box>
               </div>
