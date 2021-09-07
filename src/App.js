@@ -14,8 +14,8 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AccountCircle, Notifications } from "@material-ui/icons";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import useAuthState from "./customHooks/useAuthState";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 
@@ -49,15 +49,14 @@ function App() {
   };
   const menuId = "account-menu";
 
-  const auth = getAuth();
-  const [user, loading] = useAuthState(auth);
+  const { loading, user, auth } = useAuthState();
 
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       {!loading && (
         <>
-          {user?.email ? (
+          {user?.uid ? (
             <>
               <div>
                 <Box height="100vh" display="flex" flexDirection="column">
@@ -106,7 +105,7 @@ function App() {
                     </Menu>
                   </Box>
                   <Box flex={1} overflow="auto">
-                    <Home />
+                    <Home uid={user.uid} />
                   </Box>
                 </Box>
               </div>

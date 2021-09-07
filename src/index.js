@@ -7,12 +7,7 @@ import app from "./Firebase";
 import { getAnalytics, logEvent } from "firebase/analytics";
 const analytics = getAnalytics(app);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 function sendToAnalytics({ id, name, value }) {
   logEvent(analytics, "web-vitals", {
