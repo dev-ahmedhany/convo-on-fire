@@ -20,7 +20,7 @@ const ChatWrapper = ({ data, userId }) => {
       messages.push({
         ...msg,
         messages: [msg.message],
-        side: userId === msg.uid ? "right" : "left",
+        side: userId === msg.sentBy ? "right" : "left",
       });
     } else {
       if (
@@ -39,16 +39,16 @@ const ChatWrapper = ({ data, userId }) => {
         messages.push({
           ...msg,
           messages: [msg.message],
-          side: userId === msg.uid ? "right" : "left",
+          side: userId === msg.sentBy ? "right" : "left",
         });
       } else {
-        if (messages[messages.length - 1].uid === msg.uid) {
+        if (messages[messages.length - 1].sentBy === msg.sentBy) {
           messages[messages.length - 1].messages.push(msg.message);
         } else {
           messages.push({
             ...msg,
             messages: [msg.message],
-            side: userId === msg.uid ? "right" : "left",
+            side: userId === msg.sentBy ? "right" : "left",
           });
         }
       }
@@ -56,7 +56,7 @@ const ChatWrapper = ({ data, userId }) => {
   });
 
   return (
-    <Paper elevation={0}>
+    <Paper elevation={0} style={{ flex: "auto" }}>
       {messages.map((msg) =>
         msg.type === "Date" ? (
           <Typography

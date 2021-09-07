@@ -16,6 +16,7 @@ import ChatList from "./ChatList";
 import useUsersListen from "../../customHooks/useUsersListen";
 import useChatUser from "../../customHooks/useChatUser";
 import useChatID from "../../customHooks/useChatID";
+import useSendMessage from "../../customHooks/useSendMessage";
 
 const useStyles = makeStyles({
   table: {
@@ -35,23 +36,18 @@ const useStyles = makeStyles({
 
 // const template = [
 //   {
-//     id: "1",
-//     uid: "uid123",
 //     name: "Ahmed Hany",
 //     avatar: "",
-//     message: "Hi Jenny, How r u today?",
-//     date: new Date(Date.now() - 60 * 60 * 1000),
 //   }
 // ];
-
-const userId = "uid456";
 
 const Chat = ({ user }) => {
   const classes = useStyles();
   const [selectedId, setSelectedID] = useState();
   const { users } = useUsersListen(user);
-  const {docID} = useChatUser(selectedId, user);
-  const {messages} = useChatID(docID);
+  const { docID } = useChatUser(selectedId, user);
+  const { messages } = useChatID(docID);
+  const { sendMessage } = useSendMessage();
 
   const selectedUser = users.find((item) => item.id === selectedId);
 
@@ -104,11 +100,17 @@ const Chat = ({ user }) => {
               </>
             )}
             <Box display="flex" flex={1} className={classes.messageArea}>
-              <ChatWrapper data={messages} userId={userId} />
+              <ChatWrapper data={messages} userId={user.uid} />
             </Box>
             <div>
               <Divider />
-              <ChatInput handleSendMessage={() => {}} handleTyping={() => {}} />
+              <ChatInput
+                handleSendMessage={(msg) => {
+                  sendMessage(msg, user.uid, docID);
+                }}
+                handleTyping={() => {}}
+                disabled={!docID}
+              />
             </div>
           </Box>
         </Grid>

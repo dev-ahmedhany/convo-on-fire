@@ -4,20 +4,32 @@ import {
   collection,
   query,
   onSnapshot,
+  orderBy,
 } from "firebase/firestore";
 
 const useChatID = (docID) => {
-  const [, setUnsubscribe] = useState(()=>() => {});
+  const [, setUnsubscribe] = useState(() => () => {});
   const [messages, setMessages] = useState([]);
-  
+
   useEffect(() => {
-    if(docID){
+    if (docID) {
       const db = getFirestore();
-      const q = query(collection(db, "messages", docID, "messages"));
+      const q = query(
+        collection(db, "messages", docID, "messages"),
+        orderBy("sentAt")
+      );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messages = [];
         querySnapshot.forEach((doc) => {
-          messages.push({ id: doc.id, ...doc.data() });
+          const msg = doc.data();
+          if (msg.sentAt) {
+            const fullmessage = {
+              id: doc.id,
+              date: msg.sentAt.toDate(),
+              ...msg,
+            };
+            messages.push(fullmessage);
+          }
         });
         setMessages(messages);
       });
@@ -25,7 +37,7 @@ const useChatID = (docID) => {
         oldListener();
         return unsubscribe;
       });
-      
+
       return unsubscribe;
     }
   }, [docID]);

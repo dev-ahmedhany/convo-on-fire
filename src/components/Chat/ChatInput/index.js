@@ -4,7 +4,7 @@ import { Grid, FilledInput, Fab, InputAdornment } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { useStyles } from "./styles.js";
 
-function ChatInput({ handleTyping, handleSendMessage }) {
+function ChatInput({ handleTyping, handleSendMessage, disabled }) {
   const classes = useStyles();
 
   const [text, setText] = useState("");
@@ -40,6 +40,7 @@ function ChatInput({ handleTyping, handleSendMessage }) {
           disableUnderline
           inputProps={{ style: { padding: "18px 20px 18px" } }}
           onKeyDown={handleSendWithEnter}
+          disabled={disabled}
           endAdornment={
             <InputAdornment position="end">
               <Fab
@@ -48,6 +49,7 @@ function ChatInput({ handleTyping, handleSendMessage }) {
                 color="primary"
                 aria-label="Send"
                 onClick={handleSend}
+                disabled={disabled}
               >
                 <SendIcon />
               </Fab>
