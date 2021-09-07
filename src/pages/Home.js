@@ -4,5 +4,5 @@ import useChatsListen from "../customHooks/useChatsListen";
 
 export default function Home({ user }) {
   const { chats } = useChatsListen(user);
-  return <Chat chats={chats} />;
+  return <Chat chats={chats} user={user} />;
 }

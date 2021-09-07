@@ -12,6 +12,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import ChatInput from "./ChatInput";
+import ChatList from "./ChatList";
 
 const useStyles = makeStyles({
   table: {
@@ -84,7 +85,7 @@ const data = [
 
 const userId = "uid456";
 
-const Chat = () => {
+const Chat = ({ user }) => {
   const classes = useStyles();
 
   return (
@@ -94,12 +95,9 @@ const Chat = () => {
           <List>
             <ListItem button key="RemySharp">
               <ListItemIcon>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
-                />
+                <Avatar alt="" src={user.photoURL} />
               </ListItemIcon>
-              <ListItemText primary="John Wick"></ListItemText>
+              <ListItemText primary={user.displayName}></ListItemText>
             </ListItem>
           </List>
           <Divider />
@@ -112,36 +110,7 @@ const Chat = () => {
             />
           </Grid>
           <Divider />
-          <List>
-            <ListItem button key="RemySharp">
-              <ListItemIcon>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
-                />
-              </ListItemIcon>
-              <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
-              <ListItemText secondary="online" align="right"></ListItemText>
-            </ListItem>
-            <ListItem button key="Alice">
-              <ListItemIcon>
-                <Avatar
-                  alt="Alice"
-                  src="https://material-ui.com/static/images/avatar/3.jpg"
-                />
-              </ListItemIcon>
-              <ListItemText primary="Alice">Alice</ListItemText>
-            </ListItem>
-            <ListItem button key="CindyBaker">
-              <ListItemIcon>
-                <Avatar
-                  alt="Cindy Baker"
-                  src="https://material-ui.com/static/images/avatar/2.jpg"
-                />
-              </ListItemIcon>
-              <ListItemText primary="Cindy Baker">Cindy Baker</ListItemText>
-            </ListItem>
-          </List>
+          <ChatList />
         </Grid>
         <Grid item xs={9}>
           <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
