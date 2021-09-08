@@ -1,55 +1,73 @@
 import { Paper, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChatMsg from "../ChatMsg";
 
 const ChatWrapper = ({ data, userId, users }) => {
-  const messages = [];
+  const [messages, setMessages] = useState([]);
+  const scrollableListRef = useRef(null);
 
-  const getDateObject = (msg) => {
-    return {
-      type: "Date",
-      date: msg.date.toLocaleString("en-US", {
-        day: "numeric",
-        month: "short",
-        hour: "numeric",
-        minute: "numeric",
-      }),
+  useEffect(() => {
+    const getDateObject = (msg) => {
+      return {
+        type: "Date",
+        date: msg.date.toLocaleString("en-US", {
+          day: "numeric",
+          month: "short",
+          hour: "numeric",
+          minute: "numeric",
+        }),
+      };
     };
-  };
 
-  const getMessageObject = (msg) => {
-    return {
-      ...msg,
-      name: users.find((user) => user.id === msg.sentBy)?.displayName,
-      avatar: users.find((user) => user.id === msg.sentBy)?.photoURL,
-      messages: [msg.message],
-      side: userId === msg.sentBy ? "right" : "left",
+    const getMessageObject = (msg) => {
+      return {
+        ...msg,
+        name: users.find((user) => user.id === msg.sentBy)?.displayName,
+        avatar: users.find((user) => user.id === msg.sentBy)?.photoURL,
+        messages: [msg.message],
+        side: userId === msg.sentBy ? "right" : "left",
+      };
     };
-  };
 
-  data.forEach((msg) => {
-    if (messages.length === 0) {
-      messages.push(getDateObject(msg));
-      messages.push(getMessageObject(msg));
-    } else {
-      if (
-        msg.date.getTime() - messages[messages.length - 1].date.getTime() >
-        10 * 60 * 1000
-      ) {
-        messages.push(getDateObject(msg));
-        messages.push(getMessageObject(msg));
+    const msgs = [];
+    data.forEach((msg) => {
+      if (msgs.length === 0) {
+        msgs.push(getDateObject(msg));
+        msgs.push(getMessageObject(msg));
       } else {
-        if (messages[messages.length - 1].sentBy === msg.sentBy) {
-          messages[messages.length - 1].messages.push(msg.message);
+        if (
+          msg.date.getTime() - msgs[msgs.length - 1].date.getTime() >
+          10 * 60 * 1000
+        ) {
+          msgs.push(getDateObject(msg));
+          msgs.push(getMessageObject(msg));
         } else {
-          messages.push(getMessageObject(msg));
+          if (msgs[msgs.length - 1].sentBy === msg.sentBy) {
+            msgs[msgs.length - 1].messages.push(msg.message);
+          } else {
+            msgs.push(getMessageObject(msg));
+          }
         }
       }
-    }
-  });
+      setMessages(msgs);
+    });
+  }, [data, userId, users]);
+
+  // handles scroll events on new message added
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (scrollableListRef?.current) {
+        scrollableListRef.current.scroll({
+          top: scrollableListRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }, 10);
+    return () => clearTimeout(timer);
+  }, [messages]);
 
   return (
-    <Paper elevation={0} style={{ overflow: "auto" }}>
+    <Paper ref={scrollableListRef} elevation={0} style={{ overflow: "auto" }}>
       {messages.map((msg) =>
         msg.type === "Date" ? (
           <Typography
