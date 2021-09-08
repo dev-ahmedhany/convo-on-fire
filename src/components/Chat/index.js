@@ -95,8 +95,15 @@ const Chat = ({ user }) => {
                 <Divider />
               </>
             )}
-            <ChatWrapper data={messages} userId={user.uid} users={users} />
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: "1",
+                height: "calc(100vh - 200px)",
+              }}
+            >
+              <ChatWrapper data={messages} userId={user.uid} users={users} />
               <Divider />
               <ChatInput
                 handleSendMessage={(msg) => {

@@ -49,14 +49,7 @@ const ChatWrapper = ({ data, userId, users }) => {
   });
 
   return (
-    <Paper
-      elevation={0}
-      style={{
-        flex: "auto",
-        overflow: "auto",
-        maxHeight: "calc(100vh - 210px)",
-      }}
-    >
+    <Paper elevation={0} style={{ overflow: "auto" }}>
       {messages.map((msg) =>
         msg.type === "Date" ? (
           <Typography
