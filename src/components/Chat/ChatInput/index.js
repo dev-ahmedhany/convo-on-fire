@@ -10,8 +10,10 @@ function ChatInput({ handleTyping, handleSendMessage, disabled }) {
   const [text, setText] = useState("");
 
   const handleSend = () => {
-    handleSendMessage(text.toString());
-    setText("");
+    if (text !== "") {
+      handleSendMessage(text.toString());
+      setText("");
+    }
   };
 
   const handleSendWithEnter = (e) => {
