@@ -28,10 +28,6 @@ const useStyles = makeStyles({
   borderRight500: {
     borderRight: "1px solid #e0e0e0",
   },
-  messageArea: {
-    flexGrow: "2",
-    overflowY: "auto",
-  },
 });
 
 // const template = [
@@ -99,9 +95,7 @@ const Chat = ({ user }) => {
                 <Divider />
               </>
             )}
-            <Box display="flex" flex={1} className={classes.messageArea}>
-              <ChatWrapper data={messages} userId={user.uid} users={users} />
-            </Box>
+            <ChatWrapper data={messages} userId={user.uid} users={users} />
             <div>
               <Divider />
               <ChatInput
