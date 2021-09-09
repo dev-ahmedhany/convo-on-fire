@@ -10,7 +10,6 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
   ({
     classes,
     avatar,
-    date,
     name,
     messages,
     side,
@@ -52,13 +51,17 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
               // eslint-disable-next-line react/no-array-index-key
               <div key={msg.id || i} className={classes[`${side}Row`]}>
                 <Tooltip
-                  title={date.toLocaleString("en-US", {
-                    day: "numeric", // numeric, 2-digit
-                    year: "numeric", // numeric, 2-digit
-                    month: "long", // numeric, 2-digit, long, short, narrow
-                    hour: "numeric", // numeric, 2-digit
-                    minute: "numeric", // numeric, 2-digit
-                  })}
+                  title={
+                    msg.date
+                      ? msg.date.toLocaleString("en-US", {
+                          day: "numeric", // numeric, 2-digit
+                          year: "numeric", // numeric, 2-digit
+                          month: "long", // numeric, 2-digit, long, short, narrow
+                          hour: "numeric", // numeric, 2-digit
+                          minute: "numeric", // numeric, 2-digit
+                        })
+                      : ""
+                  }
                   placement={side}
                 >
                   <Typography
@@ -66,12 +69,12 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                     {...TypographyProps}
                     className={cx(
                       classes.msg,
-                      classes[side],
+                      classes[`${side}${msg.date ? "" : "Sending"}`],
                       attachClass(i),
                       TypographyProps.className
                     )}
                   >
-                    {msg}
+                    {msg.text}
                   </Typography>
                 </Tooltip>
               </div>
@@ -85,7 +88,6 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
 
 ChatMsg.propTypes = {
   avatar: PropTypes.string,
-  date: PropTypes.instanceOf(Date),
   name: PropTypes.string,
   messages: PropTypes.arrayOf(PropTypes.string),
   side: PropTypes.oneOf(["left", "right"]),

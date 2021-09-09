@@ -1,3 +1,5 @@
+import { lighten } from "@material-ui/core/styles";
+
 export const styles = ({ palette, spacing }) => {
   const radius = spacing(2.5);
   const size = spacing(4);
@@ -43,6 +45,12 @@ export const styles = ({ palette, spacing }) => {
       borderTopLeftRadius: radius,
       borderBottomLeftRadius: radius,
       backgroundColor: rightBgColor,
+      color: palette.common.white,
+    },
+    rightSending: {
+      borderTopLeftRadius: radius,
+      borderBottomLeftRadius: radius,
+      backgroundColor: lighten(rightBgColor, 0.5),
       color: palette.common.white,
     },
     leftFirst: {

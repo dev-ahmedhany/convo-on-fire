@@ -24,7 +24,7 @@ const ChatWrapper = ({ data, userId, users }) => {
         ...msg,
         name: users.find((user) => user.id === msg.sentBy)?.displayName,
         avatar: users.find((user) => user.id === msg.sentBy)?.photoURL,
-        messages: [msg.message],
+        messages: [{ text: msg.message, date: msg.date }],
         side: userId === msg.sentBy ? "right" : "left",
       };
     };
@@ -36,14 +36,18 @@ const ChatWrapper = ({ data, userId, users }) => {
         msgs.push(getMessageObject(msg));
       } else {
         if (
+          msg.date &&
           msg.date.getTime() - msgs[msgs.length - 1].date.getTime() >
-          10 * 60 * 1000
+            10 * 60 * 1000
         ) {
           msgs.push(getDateObject(msg));
           msgs.push(getMessageObject(msg));
         } else {
           if (msgs[msgs.length - 1].sentBy === msg.sentBy) {
-            msgs[msgs.length - 1].messages.push(msg.message);
+            msgs[msgs.length - 1].messages.push({
+              text: msg.message,
+              date: msg.date,
+            });
           } else {
             msgs.push(getMessageObject(msg));
           }

@@ -77,18 +77,16 @@ const useChatID = (docID) => {
       }
       querySnapshot.forEach((doc) => {
         const msg = doc.data();
-        if (msg.sentAt) {
-          const fullmessage = {
-            id: doc.id,
-            date: msg.sentAt.toDate(),
-            ...msg,
-          };
-          messages.push(fullmessage);
-        }
+        const fullmessage = {
+          id: doc.id,
+          date: msg.sentAt ? msg.sentAt.toDate() : false,
+          ...msg,
+        };
+        messages.push(fullmessage);
       });
       setMessages([...nextMessages, ...messages.reverse()]);
     },
-    [lastDoc,nextMessages]
+    [lastDoc, nextMessages]
   );
 
   useEffect(() => {
