@@ -42,7 +42,9 @@ const Chat = ({ user }) => {
   const [selectedId, setSelectedID] = useState();
   const { users } = useUsersListen(user);
   const { docID } = useChatUser(selectedId, user);
-  const { messages } = useChatID(docID);
+  const { messages, scrollDown, getNextMessages, disableLoadMore } = useChatID(
+    docID
+  );
   const { sendMessage } = useSendMessage();
 
   const selectedUser = users.find((item) => item.id === selectedId);
@@ -103,7 +105,14 @@ const Chat = ({ user }) => {
                 height: "calc(100vh - 200px)",
               }}
             >
-              <ChatWrapper data={messages} userId={user.uid} users={users} />
+              <ChatWrapper
+                data={messages}
+                userId={user.uid}
+                users={users}
+                scrollDown={scrollDown}
+                getNextMessages={getNextMessages}
+                disableLoadMore={disableLoadMore}
+              />
               <Divider />
               <ChatInput
                 handleSendMessage={(msg) => {

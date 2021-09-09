@@ -12,77 +12,84 @@ import {
 
 const useChatID = (docID) => {
   const [messages, setMessages] = useState([]);
+  const [scrollDown, setScrollDown] = useState(false);
+  const [disableLoadMore, setDisableLoadMore] = useState(false);
   const nextMessages = useRef([]);
-  const [lastDoc, setLastDoc] = useState();
-  const [next, setNext] = useState(0);
+  const lastDoc = useRef();
+  const loadingNextMessages = useRef(false);
 
-  useEffect(() => {
-    if (next > 0 && lastDoc && messages.length === 20) {
+  const getNextMessages = useCallback(() => {
+    if (lastDoc.current && !loadingNextMessages.current) {
+      loadingNextMessages.current = true;
       const db = getFirestore();
       const q = query(
         collection(db, "messages", docID, "messages"),
         orderBy("sentAt", "desc"),
-        startAfter(lastDoc),
+        startAfter(lastDoc.current),
         limit(20)
       );
       getDocs(q).then((querySnapshot) => {
-        setLastDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
-        const messages = [];
-        querySnapshot.forEach((doc) => {
-          const msg = doc.data();
-          if (msg.sentAt) {
+        if (!querySnapshot.empty) {
+          lastDoc.current = querySnapshot.docs[querySnapshot.docs.length - 1];
+          const messages = [];
+          querySnapshot.forEach((doc) => {
+            const msg = doc.data();
             const fullmessage = {
               id: doc.id,
               date: msg.sentAt.toDate(),
               ...msg,
             };
             messages.push(fullmessage);
-          }
-        });
-        nextMessages.current = [...messages.reverse(), ...nextMessages.current];
-        setMessages((oldMessages) => [...messages.reverse(), ...oldMessages]);
+          });
+          nextMessages.current = [
+            ...messages.reverse(),
+            ...nextMessages.current,
+          ];
+          setMessages((oldMessages) => [...messages, ...oldMessages]);
+        } else {
+          setDisableLoadMore(true);
+        }
       });
+      loadingNextMessages.current = false;
     }
-  }, [next, lastDoc, docID, messages.length]);
+  }, [docID]);
 
-  const onNext = useCallback(
-    (querySnapshot) => {
-      //add laston to old messages
-      let oldMessages = [];
-      const changes = querySnapshot.docChanges();
-      changes
-        .filter((c) => c.type === "removed")
-        .forEach((docChanges) => {
-          const doc = docChanges.doc;
-          const msg = doc.data();
-          const fullmessage = {
-            id: doc.id,
-            date: msg.sentAt.toDate(),
-            ...msg,
-          };
-          oldMessages.push(fullmessage);
-        });
-
-      nextMessages.current = [...nextMessages.current, ...oldMessages];
-
-      const messages = [];
-      const docs = querySnapshot.docs;
-      if (!lastDoc) {
-        setLastDoc(docs[docs.length - 1]);
-      }
-      querySnapshot.forEach((doc) => {
+  const onNext = useCallback((querySnapshot) => {
+    //add laston to old messages
+    let oldMessages = [];
+    const changes = querySnapshot.docChanges();
+    changes
+      .filter((c) => c.type === "removed")
+      .forEach((docChanges) => {
+        const doc = docChanges.doc;
         const msg = doc.data();
         const fullmessage = {
           id: doc.id,
-          date: msg.sentAt ? msg.sentAt.toDate() : false,
+          date: msg.sentAt.toDate(),
           ...msg,
         };
-        messages.push(fullmessage);
+        oldMessages.push(fullmessage);
       });
-      setMessages([...nextMessages.current, ...messages.reverse()]);
-    },
-    [lastDoc]
-  );
+
+    nextMessages.current = [...nextMessages.current, ...oldMessages];
+
+    const messages = [];
+    const docs = querySnapshot.docs;
+    if (!lastDoc.current) {
+      lastDoc.current = docs[docs.length - 1];
+    }
+    querySnapshot.forEach((doc) => {
+      const msg = doc.data();
+      const fullmessage = {
+        id: doc.id,
+        date: msg.sentAt ? msg.sentAt.toDate() : false,
+        ...msg,
+      };
+      messages.push(fullmessage);
+    });
+    setMessages([...nextMessages.current, ...messages.reverse()]);
+    setScrollDown((oldState) => !oldState);
+  }, []);
 
   useEffect(() => {
     if (docID) {
@@ -94,10 +101,9 @@ const useChatID = (docID) => {
       );
       return onSnapshot(q, onNext);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [docID]);
+  }, [docID, onNext]);
 
-  return { messages, setNext };
+  return { messages, scrollDown, getNextMessages, disableLoadMore };
 };
 
 export default useChatID;

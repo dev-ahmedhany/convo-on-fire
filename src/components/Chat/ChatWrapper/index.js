@@ -1,8 +1,15 @@
-import { Paper, Typography } from "@material-ui/core";
+import { Button, Paper, Typography } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import ChatMsg from "../ChatMsg";
 
-const ChatWrapper = ({ data, userId, users }) => {
+const ChatWrapper = ({
+  data,
+  userId,
+  users,
+  scrollDown,
+  getNextMessages,
+  disableLoadMore,
+}) => {
   const [messages, setMessages] = useState([]);
   const scrollableListRef = useRef(null);
 
@@ -68,33 +75,40 @@ const ChatWrapper = ({ data, userId, users }) => {
       }
     }, 10);
     return () => clearTimeout(timer);
-  }, [messages]);
+  }, [scrollDown]);
 
   return (
     <Paper ref={scrollableListRef} elevation={0} style={{ overflow: "auto" }}>
-      {messages.map((msg) =>
-        msg.type === "Date" ? (
-          <Typography
-            key={msg.date}
-            style={{
-              fontSize: "11px",
-              textAlign: "center",
-              fontWeight: "bold",
-              color: "#8a8d91",
-            }}
-          >
-            {msg.date}
-          </Typography>
-        ) : (
-          <ChatMsg
-            key={msg.id}
-            side={msg.side}
-            name={msg.name}
-            date={msg.date}
-            avatar={msg.avatar}
-            messages={msg.messages}
-          />
-        )
+      {messages?.length > 0 && (
+        <>
+          <Button disabled={disableLoadMore} onClick={getNextMessages}>
+            Load more
+          </Button>
+          {messages.map((msg) =>
+            msg.type === "Date" ? (
+              <Typography
+                key={msg.date}
+                style={{
+                  fontSize: "11px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  color: "#8a8d91",
+                }}
+              >
+                {msg.date}
+              </Typography>
+            ) : (
+              <ChatMsg
+                key={msg.id}
+                side={msg.side}
+                name={msg.name}
+                date={msg.date}
+                avatar={msg.avatar}
+                messages={msg.messages}
+              />
+            )
+          )}
+        </>
       )}
     </Paper>
   );
