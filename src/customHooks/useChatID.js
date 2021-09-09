@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getFirestore,
   collection,
@@ -12,7 +12,7 @@ import {
 
 const useChatID = (docID) => {
   const [messages, setMessages] = useState([]);
-  const [nextMessages, setNextMessages] = useState([]);
+  const nextMessages = useRef([]);
   const [lastDoc, setLastDoc] = useState();
   const [next, setNext] = useState(0);
 
@@ -39,10 +39,7 @@ const useChatID = (docID) => {
             messages.push(fullmessage);
           }
         });
-        setNextMessages((nextMessages) => [
-          ...messages.reverse(),
-          ...nextMessages,
-        ]);
+        nextMessages.current = [...messages.reverse(), ...nextMessages.current];
         setMessages((oldMessages) => [...messages.reverse(), ...oldMessages]);
       });
     }
@@ -58,17 +55,15 @@ const useChatID = (docID) => {
         .forEach((docChanges) => {
           const doc = docChanges.doc;
           const msg = doc.data();
-          if (msg.sentAt) {
-            const fullmessage = {
-              id: doc.id,
-              date: msg.sentAt.toDate(),
-              ...msg,
-            };
-            oldMessages.push(fullmessage);
-          }
+          const fullmessage = {
+            id: doc.id,
+            date: msg.sentAt.toDate(),
+            ...msg,
+          };
+          oldMessages.push(fullmessage);
         });
 
-      setNextMessages((nextMessages) => [...nextMessages, ...oldMessages]);
+      nextMessages.current = [...nextMessages.current, ...oldMessages];
 
       const messages = [];
       const docs = querySnapshot.docs;
@@ -84,9 +79,9 @@ const useChatID = (docID) => {
         };
         messages.push(fullmessage);
       });
-      setMessages([...nextMessages, ...messages.reverse()]);
+      setMessages([...nextMessages.current, ...messages.reverse()]);
     },
-    [lastDoc, nextMessages]
+    [lastDoc]
   );
 
   useEffect(() => {
