@@ -5,7 +5,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 
-const ChatList = ({ users, onClick, selectedId }) => {
+const UsersList = ({ users, onClick, selectedId }) => {
   return (
     <List>
       {users.map((item) => (
@@ -30,4 +30,4 @@ const ChatList = ({ users, onClick, selectedId }) => {
   );
 };
 
-export default ChatList;
+export default UsersList;

@@ -15,11 +15,12 @@ import {
   Avatar,
 } from "@material-ui/core";
 import ChatInput from "./ChatInput";
-import ChatList from "./ChatList";
+import UsersList from "./UsersList";
 import useUsersListen from "../../customHooks/useUsersListen";
 import useChatUser from "../../customHooks/useChatUser";
 import useChatID from "../../customHooks/useChatID";
 import useSendMessage from "../../customHooks/useSendMessage";
+import useChatsListen from "../../customHooks/useChatsListen";
 
 const useStyles = makeStyles({
   table: {
@@ -33,13 +34,6 @@ const useStyles = makeStyles({
   },
 });
 
-// const template = [
-//   {
-//     name: "Ahmed Hany",
-//     avatar: "",
-//   }
-// ];
-
 const Chat = ({ user }) => {
   const classes = useStyles();
   const [selectedId, setSelectedID] = useState();
@@ -49,6 +43,9 @@ const Chat = ({ user }) => {
     docID
   );
   const { sendMessage } = useSendMessage();
+  const { chats } = useChatsListen(user);
+
+  console.log("chats", chats);
 
   const selectedUser = users.find((item) => item.id === selectedId);
 
@@ -74,7 +71,7 @@ const Chat = ({ user }) => {
           </Grid>
           <Grid item xs={12} style={{ padding: "10px" }}>
             <Typography>all users</Typography>
-            <ChatList
+            <UsersList
               users={users}
               onClick={(e, id) => {
                 setSelectedID(id);

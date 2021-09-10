@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   getFirestore,
   collection,
@@ -9,24 +9,25 @@ import {
 
 const useChatsListen = (user) => {
   const [chats, setChats] = useState([]);
-  const [isListening, setIsListening] = useState(false);
+
+  const onNext = useCallback((querySnapshot) => {
+    const chatArray = [];
+    querySnapshot.forEach((doc) => {
+      chatArray.push({ id: doc.id, ...doc.data() });
+    });
+    setChats(chatArray);
+  }, []);
 
   useEffect(() => {
-    if (user && !isListening) {
-      setIsListening(true);
+    if (user) {
       const db = getFirestore();
-      const chatsRef = collection(db, "chats");
-      const q = query(chatsRef, where("members", "array-contains", user.uid));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const chatArray = [];
-        querySnapshot.forEach((doc) => {
-          chatArray.push({ id: doc.id, ...doc.data() });
-        });
-        setChats(chatArray);
-      });
-      return unsubscribe;
+      const q = query(
+        collection(db, "chats"),
+        where("members", "array-contains", user.uid)
+      );
+      return onSnapshot(q, onNext);
     }
-  }, [user, isListening]);
+  }, [user, onNext]);
 
   return { chats };
 };
