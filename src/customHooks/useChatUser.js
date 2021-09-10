@@ -19,8 +19,7 @@ const useChatUser = (uid, user) => {
         const chatsRef = collection(db, "chats");
         const q = query(
           chatsRef,
-          where("members", "array-contains", uid),
-          where("type", "==", 1)
+          where("between", "==", [user.uid, uid].sort().join(","))
         );
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
@@ -33,6 +32,7 @@ const useChatUser = (uid, user) => {
             createdBy: user.uid,
             type: 1,
             members: [uid, user.uid],
+            between: [uid, user.uid].sort().join(","),
           });
           setDocID(docRef.id);
         }

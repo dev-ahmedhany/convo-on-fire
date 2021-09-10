@@ -7,6 +7,9 @@ import {
   onSnapshot,
   documentId,
   getDocs,
+  doc,
+  setDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 
 const useUsersListen = (user) => {
@@ -14,7 +17,6 @@ const useUsersListen = (user) => {
   const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
-    let unsubscribe = () => {};
     if (user && !isListening) {
       const onNext = (querySnapshot) => {
         const chatArray = [];
@@ -28,9 +30,14 @@ const useUsersListen = (user) => {
       const chatsRef = collection(db, "users");
       const q = query(chatsRef, where(documentId(), "!=", user.uid));
       getDocs(q).then(onNext);
-      unsubscribe = onSnapshot(q, onNext);
+      const unsubscribe = onSnapshot(q, onNext);
+      setDoc(doc(db, "users", user.uid), {
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        lastOnline: serverTimestamp(),
+      });
+      return unsubscribe;
     }
-    return unsubscribe;
   }, [user, isListening]);
 
   return { users };
