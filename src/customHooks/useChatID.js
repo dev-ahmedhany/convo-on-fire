@@ -93,6 +93,7 @@ const useChatID = (docID) => {
 
   useEffect(() => {
     if (docID) {
+      nextMessages.current = [];
       const db = getFirestore();
       const q = query(
         collection(db, "messages", docID, "messages"),
