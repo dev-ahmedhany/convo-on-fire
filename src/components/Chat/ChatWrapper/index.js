@@ -27,11 +27,12 @@ const ChatWrapper = ({
     };
 
     const getMessageObject = (msg) => {
+      const sender = users.find((user) => user.id === msg.sentBy);
       return {
         ...msg,
-        name: users.find((user) => user.id === msg.sentBy)?.displayName,
-        avatar: users.find((user) => user.id === msg.sentBy)?.photoURL,
-        messages: [{ text: msg.message, date: msg.date }],
+        name: sender?.displayName,
+        avatar: sender?.photoURL,
+        messages: [{ text: msg.message, date: msg.date, id: msg.id }],
         side: userId === msg.sentBy ? "right" : "left",
       };
     };
@@ -57,6 +58,7 @@ const ChatWrapper = ({
               msgs[msgs.length - 1].messages.push({
                 text: msg.message,
                 date: msg.date,
+                id: msg.id,
               });
             } else {
               msgs.push(getMessageObject(msg));

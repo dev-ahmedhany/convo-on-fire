@@ -5,10 +5,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 
-/*
-id: "AJAPZsotG6qJSRYT0x1b"
-*/
-
 const ChatsList = ({ chats, onClick, selectedId, uid, users }) => {
   return (
     <List>

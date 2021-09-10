@@ -10,6 +10,15 @@ export const styles = ({ palette, spacing }) => {
       width: size,
       height: size,
     },
+    avatarSmall: {
+      width: "14px",
+      height: "14px",
+    },
+    seen: {
+      width: "20px",
+      alignSelf: "flex-end",
+      direction: "rtl",
+    },
     leftRow: {
       textAlign: "left",
     },

@@ -10,6 +10,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
   ({
     classes,
     avatar,
+    seen,
     name,
     messages,
     side,
@@ -48,8 +49,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
           {messages.map((msg, i) => {
             const TypographyProps = getTypographyProps(msg, i);
             return (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={msg.id || i} className={classes[`${side}Row`]}>
+              <div key={msg.id} className={classes[`${side}Row`]}>
                 <Tooltip
                   title={
                     msg.date
@@ -62,7 +62,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                         })
                       : ""
                   }
-                  placement={side}
+                  placement={"left"}
                 >
                   <Typography
                     align={"left"}
@@ -80,6 +80,17 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
               </div>
             );
           })}
+        </Grid>
+        <Grid
+          item
+          style={side === "left" ? { flexGrow: "1" } : {}}
+          className={classes.seen}
+        >
+          {seen && (
+            <Tooltip title={name} aria-label={name}>
+              <Avatar src={avatar} className={classes.avatarSmall} />
+            </Tooltip>
+          )}
         </Grid>
       </Grid>
     );
