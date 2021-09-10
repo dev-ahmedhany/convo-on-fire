@@ -95,7 +95,7 @@ const useChatID = (docID) => {
     if (docID) {
       nextMessages.current = [];
       lastDoc.current = null;
-      setDisableLoadMore(false)
+      setDisableLoadMore(false);
       const db = getFirestore();
       const q = query(
         collection(db, "messages", docID, "messages"),

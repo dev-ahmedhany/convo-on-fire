@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import ChatWrapper from "./ChatWrapper";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
-import TextField from "@material-ui/core/TextField";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
+import {
+  Typography,
+  Paper,
+  Grid,
+  Box,
+  Divider,
+  TextField,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+} from "@material-ui/core";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import useUsersListen from "../../customHooks/useUsersListen";
@@ -69,13 +72,16 @@ const Chat = ({ user }) => {
               fullWidth
             />
           </Grid>
-          <ChatList
-            users={users}
-            onClick={(e, id) => {
-              setSelectedID(id);
-            }}
-            selectedId={selectedId}
-          />
+          <Grid item xs={12} style={{ padding: "10px" }}>
+            <Typography>all users</Typography>
+            <ChatList
+              users={users}
+              onClick={(e, id) => {
+                setSelectedID(id);
+              }}
+              selectedId={selectedId}
+            />
+          </Grid>
         </Grid>
         <Grid item xs={9}>
           <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
