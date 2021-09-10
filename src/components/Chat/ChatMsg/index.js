@@ -89,7 +89,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
 ChatMsg.propTypes = {
   avatar: PropTypes.string,
   name: PropTypes.string,
-  messages: PropTypes.arrayOf(PropTypes.string),
+  messages: PropTypes.arrayOf(PropTypes.object),
   side: PropTypes.oneOf(["left", "right"]),
   GridContainerProps: PropTypes.shape({}),
   GridItemProps: PropTypes.shape({}),

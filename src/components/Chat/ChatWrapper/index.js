@@ -37,31 +37,35 @@ const ChatWrapper = ({
     };
 
     const msgs = [];
-    data.forEach((msg) => {
-      if (msgs.length === 0) {
-        msgs.push(getDateObject(msg));
-        msgs.push(getMessageObject(msg));
-      } else {
-        if (
-          msg.date &&
-          msg.date.getTime() - msgs[msgs.length - 1].date.getTime() >
-            10 * 60 * 1000
-        ) {
+    if (data.length === 0) {
+      setMessages([]);
+    } else {
+      data.forEach((msg) => {
+        if (msgs.length === 0) {
           msgs.push(getDateObject(msg));
           msgs.push(getMessageObject(msg));
         } else {
-          if (msgs[msgs.length - 1].sentBy === msg.sentBy) {
-            msgs[msgs.length - 1].messages.push({
-              text: msg.message,
-              date: msg.date,
-            });
-          } else {
+          if (
+            msg.date &&
+            msg.date.getTime() - msgs[msgs.length - 1].date.getTime() >
+              10 * 60 * 1000
+          ) {
+            msgs.push(getDateObject(msg));
             msgs.push(getMessageObject(msg));
+          } else {
+            if (msgs[msgs.length - 1].sentBy === msg.sentBy) {
+              msgs[msgs.length - 1].messages.push({
+                text: msg.message,
+                date: msg.date,
+              });
+            } else {
+              msgs.push(getMessageObject(msg));
+            }
           }
         }
-      }
-      setMessages(msgs);
-    });
+        setMessages(msgs);
+      });
+    }
   }, [data, userId, users]);
 
   // handles scroll events on new message added
