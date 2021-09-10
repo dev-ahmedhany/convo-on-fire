@@ -15,7 +15,7 @@ const UsersList = ({ users, onClick, selectedId }) => {
           onClick={(e) => {
             onClick(e, item.id);
           }}
-          selected={selectedId === item.id}
+          // selected={selectedId === item.id}
         >
           <ListItemIcon>
             <Avatar alt={item.displayName} src={item.photoURL} />

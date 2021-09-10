@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatWrapper from "./ChatWrapper";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -21,6 +21,7 @@ import useChatUser from "../../customHooks/useChatUser";
 import useChatID from "../../customHooks/useChatID";
 import useSendMessage from "../../customHooks/useSendMessage";
 import useChatsListen from "../../customHooks/useChatsListen";
+import ChatsList from "./ChatsList";
 
 const useStyles = makeStyles({
   table: {
@@ -37,17 +38,20 @@ const useStyles = makeStyles({
 const Chat = ({ user }) => {
   const classes = useStyles();
   const [selectedId, setSelectedID] = useState();
+  const [selectedChatId, setSelectedChatID] = useState();
   const { users } = useUsersListen(user);
   const { docID } = useChatUser(selectedId, user);
   const { messages, scrollDown, getNextMessages, disableLoadMore } = useChatID(
-    docID
+    selectedChatId
   );
   const { sendMessage } = useSendMessage();
   const { chats } = useChatsListen(user);
 
-  console.log("chats", chats);
-
   const selectedUser = users.find((item) => item.id === selectedId);
+
+  useEffect(() => {
+    setSelectedChatID(docID);
+  }, [docID]);
 
   return (
     <Box display="flex" style={{ height: "100%" }}>
@@ -67,6 +71,18 @@ const Chat = ({ user }) => {
               label="Search"
               variant="outlined"
               fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} style={{ padding: "10px" }}>
+            <Typography>chats</Typography>
+            <ChatsList
+              chats={chats}
+              users={users}
+              uid={user.uid}
+              onClick={(e, id) => {
+                setSelectedChatID(id);
+              }}
+              selectedId={selectedChatId}
             />
           </Grid>
           <Grid item xs={12} style={{ padding: "10px" }}>
@@ -119,10 +135,10 @@ const Chat = ({ user }) => {
               <Divider />
               <ChatInput
                 handleSendMessage={(msg) => {
-                  sendMessage(msg, user.uid, docID);
+                  sendMessage(msg, user.uid, selectedChatId);
                 }}
                 handleTyping={() => {}}
-                disabled={!docID}
+                disabled={!selectedChatId}
               />
             </div>
           </Box>
