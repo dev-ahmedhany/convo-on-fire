@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 
 const useChatUser = (uid, user) => {
-  const [docID, setDocID] = useState();
+  const [doc, setDoc] = useState();
 
   useEffect(() => {
     if (uid) {
@@ -24,7 +24,8 @@ const useChatUser = (uid, user) => {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
-            setDocID(doc.id);
+            const data = doc.data();
+            setDoc({ id: doc.id, type: data.type, members: data.members });
           });
         } else {
           const docRef = await addDoc(collection(db, "chats"), {
@@ -34,14 +35,14 @@ const useChatUser = (uid, user) => {
             members: [uid, user.uid],
             between: [uid, user.uid].sort().join(","),
           });
-          setDocID(docRef.id);
+          setDoc({ id: docRef.id, type: 1, members: [uid, user.uid] });
         }
       };
       getID();
     }
   }, [user, uid]);
 
-  return { docID };
+  return { doc };
 };
 
 export default useChatUser;

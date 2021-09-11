@@ -14,18 +14,21 @@ import {
 
 const useUsersListen = (user) => {
   const [users, setUsers] = useState([]);
-  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
-    if (user && !isListening) {
+    if (user) {
       const onNext = (querySnapshot) => {
         const chatArray = [];
         querySnapshot.forEach((doc) => {
-          chatArray.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+          chatArray.push({
+            id: doc.id,
+            ...data,
+            lastOnline: data.lastOnline ? data.lastOnline.toDate() : false,
+          });
         });
         setUsers(chatArray);
       };
-      setIsListening(true);
       const db = getFirestore();
       const chatsRef = collection(db, "users");
       const q = query(chatsRef, where(documentId(), "!=", user.uid));
@@ -38,7 +41,7 @@ const useUsersListen = (user) => {
       });
       return unsubscribe;
     }
-  }, [user, isListening]);
+  }, [user]);
 
   return { users };
 };

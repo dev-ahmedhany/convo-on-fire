@@ -9,11 +9,24 @@ const ChatWrapper = ({
   scrollDown,
   getNextMessages,
   disableLoadMore,
+  members,
 }) => {
   const [messages, setMessages] = useState([]);
   const scrollableListRef = useRef(null);
 
   useEffect(() => {
+    const otherusers = members.find((item) => item !== userId);
+    const selectedUser = users.find((item) => item.id === otherusers);
+    const seenMessages = data.filter(
+      (msg) => msg.date && msg.date < selectedUser?.lastOnline
+    );
+    const lastSeenMessage = seenMessages[seenMessages.length - 1];
+    const seen = {
+      messageId: lastSeenMessage?.id,
+      lastSeen: `Last seen : ${selectedUser?.lastOnline.toLocaleString()}`,
+      avatar: selectedUser?.photoURL,
+    };
+
     const getDateObject = (msg) => {
       return {
         type: "Date",
@@ -30,6 +43,7 @@ const ChatWrapper = ({
       const sender = users.find((user) => user.id === msg.sentBy);
       return {
         ...msg,
+        seen,
         name: sender?.displayName,
         avatar: sender?.photoURL,
         messages: [{ text: msg.message, date: msg.date, id: msg.id }],
@@ -68,7 +82,7 @@ const ChatWrapper = ({
         setMessages(msgs);
       });
     }
-  }, [data, userId, users]);
+  }, [data, userId, users, members]);
 
   // handles scroll events on new message added
   useEffect(() => {
@@ -108,6 +122,7 @@ const ChatWrapper = ({
                 key={msg.id}
                 side={msg.side}
                 name={msg.name}
+                seen={msg.seen}
                 date={msg.date}
                 avatar={msg.avatar}
                 messages={msg.messages}

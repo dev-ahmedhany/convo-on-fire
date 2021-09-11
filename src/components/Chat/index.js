@@ -38,11 +38,12 @@ const useStyles = makeStyles({
 const Chat = ({ user }) => {
   const classes = useStyles();
   const [selectedId, setSelectedID] = useState();
-  const [selectedChatId, setSelectedChatID] = useState();
+  const [selectedChat, setSelectedChat] = useState();
   const { users } = useUsersListen(user);
-  const { docID } = useChatUser(selectedId, user);
+  const { doc } = useChatUser(selectedId, user);
   const { messages, scrollDown, getNextMessages, disableLoadMore } = useChatID(
-    selectedChatId
+    selectedChat?.id,
+    user
   );
   const { sendMessage } = useSendMessage();
   const { chats } = useChatsListen(user);
@@ -50,8 +51,8 @@ const Chat = ({ user }) => {
   const selectedUser = users.find((item) => item.id === selectedId);
 
   useEffect(() => {
-    setSelectedChatID(docID);
-  }, [docID]);
+    setSelectedChat(doc);
+  }, [doc]);
 
   return (
     <Box display="flex" style={{ height: "100%" }}>
@@ -80,9 +81,9 @@ const Chat = ({ user }) => {
               users={users}
               uid={user.uid}
               onClick={(e, id) => {
-                setSelectedChatID(id);
+                setSelectedChat(id);
               }}
-              selectedId={selectedChatId}
+              selectedId={selectedChat?.id}
             />
           </Grid>
           <Grid item xs={12} style={{ padding: "10px" }}>
@@ -124,21 +125,24 @@ const Chat = ({ user }) => {
                 height: "calc(100vh - 200px)",
               }}
             >
-              <ChatWrapper
-                data={messages}
-                userId={user.uid}
-                users={users}
-                scrollDown={scrollDown}
-                getNextMessages={getNextMessages}
-                disableLoadMore={disableLoadMore}
-              />
+              {selectedChat && (
+                <ChatWrapper
+                  data={messages}
+                  members={selectedChat.members}
+                  userId={user.uid}
+                  users={users}
+                  scrollDown={scrollDown}
+                  getNextMessages={getNextMessages}
+                  disableLoadMore={disableLoadMore}
+                />
+              )}
               <Divider />
               <ChatInput
                 handleSendMessage={(msg) => {
-                  sendMessage(msg, user.uid, selectedChatId);
+                  sendMessage(msg, user.uid, selectedChat.id);
                 }}
                 handleTyping={() => {}}
-                disabled={!selectedChatId}
+                disabled={!selectedChat}
               />
             </div>
           </Box>
