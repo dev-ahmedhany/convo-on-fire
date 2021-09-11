@@ -25,7 +25,6 @@ const useChatsListen = (user) => {
           finalData.seen[key] = value.toDate();
         }
       }
-      console.log("finalData", finalData);
       chatArray.push(finalData);
     });
     setChats(chatArray);

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "clsx";
-import { Avatar, Tooltip, Typography, Grid } from "@material-ui/core";
+import { Avatar, Tooltip, Typography, Grid, Box } from "@material-ui/core";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./styles";
@@ -30,75 +30,77 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
     };
     return (
       <Grid container {...GridContainerProps}>
-        {side === "left" && (
-          <Grid item {...GridItemProps}>
-            <Tooltip title={name} aria-label={name}>
-              <Avatar
-                src={avatar}
-                {...AvatarProps}
-                className={cx(classes.avatar, AvatarProps.className)}
-              />
-            </Tooltip>
-          </Grid>
-        )}
-        <Grid item style={{ flexGrow: "1" }}>
-          {messages.map((msg, i) => {
-            const TypographyProps = getTypographyProps(msg, i);
-            return (
-              <Grid
-                container
-                item
-                justifyContent={side === "right" ? "flex-end" : "flex-start"}
-              >
-                <Grid item xs={8}>
-                  <div key={msg.id} className={classes[`${side}Row`]}>
-                    <Tooltip
-                      title={
-                        msg.date
-                          ? msg.date.toLocaleString("en-US", {
-                              day: "numeric", // numeric, 2-digit
-                              year: "numeric", // numeric, 2-digit
-                              month: "long", // numeric, 2-digit, long, short, narrow
-                              hour: "numeric", // numeric, 2-digit
-                              minute: "numeric", // numeric, 2-digit
-                            })
-                          : ""
-                      }
-                      placement={"left"}
-                    >
-                      <Typography
-                        align={"left"}
-                        {...TypographyProps}
-                        className={cx(
-                          classes.msg,
-                          classes[`${side}${msg.date ? "" : "Sending"}`],
-                          attachClass(i),
-                          TypographyProps.className
-                        )}
-                      >
-                        {msg.text}
-                      </Typography>
-                    </Tooltip>
-                  </div>
-                </Grid>
+        <Box display="flex" flexGrow="1">
+          {side === "left" && (
+            <Grid item {...GridItemProps}>
+              <Tooltip title={name} aria-label={name}>
+                <Avatar
+                  src={avatar}
+                  {...AvatarProps}
+                  className={cx(classes.avatar, AvatarProps.className)}
+                />
+              </Tooltip>
+            </Grid>
+          )}
+          <Box style={{ flexGrow: "1" }}>
+            {messages.map((msg, i) => {
+              const TypographyProps = getTypographyProps(msg, i);
+              return (
                 <Grid
+                  container
                   item
-                  style={side === "left" ? { flexGrow: "1" } : {}}
-                  className={classes.seen}
+                  justifyContent={side === "right" ? "flex-end" : "flex-start"}
                 >
-                  {seen?.messageId === msg.id && (
-                    <Tooltip title={seen.lastSeen} aria-label={seen.lastSeen}>
-                      <Avatar
-                        src={seen.avatar}
-                        className={classes.avatarSmall}
-                      />
-                    </Tooltip>
-                  )}
+                  <Grid item xs={8}>
+                    <div key={msg.id} className={classes[`${side}Row`]}>
+                      <Tooltip
+                        title={
+                          msg.date
+                            ? msg.date.toLocaleString("en-US", {
+                                day: "numeric", // numeric, 2-digit
+                                year: "numeric", // numeric, 2-digit
+                                month: "long", // numeric, 2-digit, long, short, narrow
+                                hour: "numeric", // numeric, 2-digit
+                                minute: "numeric", // numeric, 2-digit
+                              })
+                            : ""
+                        }
+                        placement={"left"}
+                      >
+                        <Typography
+                          align={"left"}
+                          {...TypographyProps}
+                          className={cx(
+                            classes.msg,
+                            classes[`${side}${msg.date ? "" : "Sending"}`],
+                            attachClass(i),
+                            TypographyProps.className
+                          )}
+                        >
+                          {msg.text}
+                        </Typography>
+                      </Tooltip>
+                    </div>
+                  </Grid>
+                  <Grid
+                    item
+                    style={side === "left" ? { flexGrow: "1" } : {}}
+                    className={classes.seen}
+                  >
+                    {seen?.messageId === msg.id && (
+                      <Tooltip title={seen.lastSeen} aria-label={seen.lastSeen}>
+                        <Avatar
+                          src={seen.avatar}
+                          className={classes.avatarSmall}
+                        />
+                      </Tooltip>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            );
-          })}
-        </Grid>
+              );
+            })}
+          </Box>
+        </Box>
       </Grid>
     );
   }

@@ -35,7 +35,7 @@ const Chat = ({ user }) => {
   const [selectedChat, setSelectedChat] = useState();
   const [selectedChatId, setSelectedChatId] = useState();
   const { users } = useUsersListen(user);
-  const { docId } = useChatUser(selectedId, user);
+  const { getDocId } = useChatUser();
   const { messages, scrollDown, getNextMessages, disableLoadMore } = useChatID(
     selectedChat?.id,
     user
@@ -44,12 +44,6 @@ const Chat = ({ user }) => {
   const { chats } = useChatsListen(user);
 
   const selectedUser = users.find((item) => item.id === selectedId);
-
-  useEffect(() => {
-    if (docId) {
-      setSelectedChatId(docId);
-    }
-  }, [docId]);
 
   useEffect(() => {
     if (selectedChatId && chats.length > 0) {
@@ -88,18 +82,20 @@ const Chat = ({ user }) => {
                 chats={chats}
                 users={users}
                 uid={user.uid}
-                onClick={(e, id) => {
+                onClick={(e, id, uid) => {
                   setSelectedChatId(id);
+                  setSelectedID(uid);
                 }}
                 selectedId={selectedChatId}
               />
               <Typography>all users</Typography>
               <UsersList
                 users={users}
-                onClick={(e, id) => {
+                onClick={async (e, id) => {
+                  const docId = await getDocId(user.uid, id);
+                  setSelectedChatId(docId);
                   setSelectedID(id);
                 }}
-                selectedId={selectedId}
               />
             </List>
           </Box>

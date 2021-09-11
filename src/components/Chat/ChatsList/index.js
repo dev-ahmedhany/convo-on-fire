@@ -1,9 +1,11 @@
 import React from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+} from "@material-ui/core";
 
 const ChatsList = ({ chats, onClick, selectedId, uid, users }) => {
   return (
@@ -18,7 +20,7 @@ const ChatsList = ({ chats, onClick, selectedId, uid, users }) => {
               button
               key={item.id}
               onClick={(e) => {
-                onClick(e, item.id);
+                onClick(e, item.id, user.id);
               }}
               selected={selectedId === item.id}
             >

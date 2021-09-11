@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import {
   getFirestore,
   addDoc,
@@ -9,37 +9,30 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-const useChatUser = (uid, user) => {
-  const [docId, setDocId] = useState();
-
-  useEffect(() => {
-    if (uid) {
-      const getID = async () => {
-        const db = getFirestore();
-        const chatsRef = collection(db, "chats");
-        const q = query(
-          chatsRef,
-          where("between", "==", [user.uid, uid].sort().join(","))
-        );
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          setDocId(querySnapshot.docs[0].id);
-        } else {
-          const docRef = await addDoc(collection(db, "chats"), {
-            createdAt: serverTimestamp(),
-            createdBy: user.uid,
-            type: 1,
-            members: [uid, user.uid],
-            between: [uid, user.uid].sort().join(","),
-          });
-          setDocId(docRef.id);
-        }
-      };
-      getID();
+const useChatUser = () => {
+  const getDocId = useCallback(async (currentUserId, otherUserId) => {
+    const db = getFirestore();
+    const chatsRef = collection(db, "chats");
+    const q = query(
+      chatsRef,
+      where("between", "==", [currentUserId, otherUserId].sort().join(","))
+    );
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].id;
+    } else {
+      const docRef = await addDoc(collection(db, "chats"), {
+        createdAt: serverTimestamp(),
+        createdBy: currentUserId,
+        type: 1,
+        members: [otherUserId, currentUserId],
+        between: [otherUserId, currentUserId].sort().join(","),
+      });
+      return docRef.id;
     }
-  }, [user, uid]);
+  }, []);
 
-  return { docId };
+  return { getDocId };
 };
 
 export default useChatUser;
