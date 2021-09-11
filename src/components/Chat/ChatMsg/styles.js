@@ -19,6 +19,12 @@ export const styles = ({ palette, spacing }) => {
       alignSelf: "flex-end",
       direction: "rtl",
     },
+    reply: {
+      color: palette.common.white,
+      "&:hover": {
+        color: palette.grey[500],
+      },
+    },
     leftRow: {
       textAlign: "left",
     },
