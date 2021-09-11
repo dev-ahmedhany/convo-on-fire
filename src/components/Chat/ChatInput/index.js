@@ -22,11 +22,13 @@ function ChatInput({
   const classes = useStyles();
 
   const [text, setText] = useState("");
+  const inputRef = React.useRef();
 
   const handleSend = () => {
     if (text !== "") {
       handleSendMessage(text.toString());
       setText("");
+      inputRef.current.focus();
     }
   };
 
@@ -65,10 +67,10 @@ function ChatInput({
           </Box>
         )}
         <FilledInput
+          inputRef={inputRef}
           className={classes.textBox}
           required
           autoComplete="off"
-          type="text"
           multiline
           maxRows={1}
           variant="outlined"
