@@ -15,17 +15,20 @@ const ChatWrapper = ({
   const scrollableListRef = useRef(null);
 
   useEffect(() => {
-    const otherusers = members.find((item) => item !== userId);
-    const selectedUser = users.find((item) => item.id === otherusers);
-    const seenMessages = data.filter(
-      (msg) => msg.date && msg.date < selectedUser?.lastOnline
-    );
-    const lastSeenMessage = seenMessages[seenMessages.length - 1];
-    const seen = {
-      messageId: lastSeenMessage?.id,
-      lastSeen: `Last seen : ${selectedUser?.lastOnline.toLocaleString()}`,
-      avatar: selectedUser?.photoURL,
-    };
+    let seen = {};
+    if (members) {
+      const otherusers = members.find((item) => item !== userId);
+      const selectedUser = users.find((item) => item.id === otherusers);
+      const seenMessages = data.filter(
+        (msg) => msg.date && msg.date < selectedUser?.lastOnline
+      );
+      const lastSeenMessage = seenMessages[seenMessages.length - 1];
+      seen = {
+        messageId: lastSeenMessage?.id,
+        lastSeen: `Last seen : ${selectedUser?.lastOnline.toLocaleString()}`,
+        avatar: selectedUser?.photoURL,
+      };
+    }
 
     const getDateObject = (msg) => {
       return {
@@ -98,8 +101,12 @@ const ChatWrapper = ({
   }, [scrollDown]);
 
   return (
-    <Paper ref={scrollableListRef} elevation={0} style={{ overflow: "auto" }}>
-      {messages?.length > 0 && (
+    <Paper
+      ref={scrollableListRef}
+      elevation={0}
+      style={{ overflow: "auto", flexGrow: "1", height: "0px" }}
+    >
+      {members && messages?.length > 0 && (
         <>
           <Button disabled={disableLoadMore} onClick={getNextMessages}>
             Load more

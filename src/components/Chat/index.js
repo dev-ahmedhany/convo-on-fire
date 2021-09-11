@@ -120,20 +120,18 @@ const Chat = ({ user }) => {
                 display: "flex",
                 flexDirection: "column",
                 flexGrow: "1",
-                height: "calc(100vh - 200px)",
+                height: "100%",
               }}
             >
-              {selectedChat && (
-                <ChatWrapper
-                  data={messages}
-                  members={selectedChat.members}
-                  userId={user.uid}
-                  users={users}
-                  scrollDown={scrollDown}
-                  getNextMessages={getNextMessages}
-                  disableLoadMore={disableLoadMore}
-                />
-              )}
+              <ChatWrapper
+                data={messages}
+                members={selectedChat?.members}
+                userId={user.uid}
+                users={users}
+                scrollDown={scrollDown}
+                getNextMessages={getNextMessages}
+                disableLoadMore={disableLoadMore}
+              />
               <Divider />
               <ChatInput
                 handleSendMessage={(msg) => {
