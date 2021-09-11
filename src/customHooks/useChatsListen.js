@@ -19,6 +19,7 @@ const useChatsListen = (user) => {
         type: data.type,
         members: data.members,
         seen: data.seen || {},
+        between: data.between,
       };
       for (const [key, value] of Object.entries(finalData.seen)) {
         if (value) {
