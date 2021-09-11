@@ -18,7 +18,7 @@ const ChatsList = ({ chats, onClick, selectedId, uid, users }) => {
               button
               key={item.id}
               onClick={(e) => {
-                onClick(e, item);
+                onClick(e, item.id);
               }}
               selected={selectedId === item.id}
             >

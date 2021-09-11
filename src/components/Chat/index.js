@@ -33,8 +33,9 @@ const Chat = ({ user }) => {
   const classes = useStyles();
   const [selectedId, setSelectedID] = useState();
   const [selectedChat, setSelectedChat] = useState();
+  const [selectedChatId, setSelectedChatId] = useState();
   const { users } = useUsersListen(user);
-  const { doc } = useChatUser(selectedId, user);
+  const { docId } = useChatUser(selectedId, user);
   const { messages, scrollDown, getNextMessages, disableLoadMore } = useChatID(
     selectedChat?.id,
     user
@@ -45,14 +46,16 @@ const Chat = ({ user }) => {
   const selectedUser = users.find((item) => item.id === selectedId);
 
   useEffect(() => {
-    setSelectedChat(doc);
-  }, [doc]);
+    if (docId) {
+      setSelectedChatId(docId);
+    }
+  }, [docId]);
 
   useEffect(() => {
-    if (selectedChat?.id && chats.length > 0) {
-      setSelectedChat(chats.find((chat) => chat.id === selectedChat.id));
+    if (selectedChatId && chats.length > 0) {
+      setSelectedChat(chats.find((chat) => chat.id === selectedChatId));
     }
-  }, [chats, selectedChat?.id]);
+  }, [chats, selectedChatId]);
 
   return (
     <Box display="flex" style={{ height: "100%" }}>
@@ -86,9 +89,9 @@ const Chat = ({ user }) => {
                 users={users}
                 uid={user.uid}
                 onClick={(e, id) => {
-                  setSelectedChat(id);
+                  setSelectedChatId(id);
                 }}
-                selectedId={selectedChat?.id}
+                selectedId={selectedChatId}
               />
               <Typography>all users</Typography>
               <UsersList
