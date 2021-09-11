@@ -24,12 +24,6 @@ import useChatsListen from "../../customHooks/useChatsListen";
 import ChatsList from "./ChatsList";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-  headBG: {
-    backgroundColor: "#e0e0e0",
-  },
   borderRight500: {
     borderRight: "1px solid #e0e0e0",
   },
@@ -58,44 +52,48 @@ const Chat = ({ user }) => {
     <Box display="flex" style={{ height: "100%" }}>
       <Grid container component={Paper}>
         <Grid item xs={3} className={classes.borderRight500}>
-          <List>
-            <ListItem>
-              <ListItemIcon>
-                <Avatar alt={user.displayName} src={user.photoURL} />
-              </ListItemIcon>
-              <ListItemText primary={user.displayName}></ListItemText>
-            </ListItem>
-          </List>
-          <Grid item xs={12} style={{ padding: "10px" }}>
-            <TextField
-              id="outlined-basic-email"
-              label="Search"
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} style={{ padding: "10px" }}>
-            <Typography>chats</Typography>
-            <ChatsList
-              chats={chats}
-              users={users}
-              uid={user.uid}
-              onClick={(e, id) => {
-                setSelectedChat(id);
-              }}
-              selectedId={selectedChat?.id}
-            />
-          </Grid>
-          <Grid item xs={12} style={{ padding: "10px" }}>
-            <Typography>all users</Typography>
-            <UsersList
-              users={users}
-              onClick={(e, id) => {
-                setSelectedID(id);
-              }}
-              selectedId={selectedId}
-            />
-          </Grid>
+          <Box
+            display="flex"
+            flexDirection="column"
+            style={{ padding: "10px", height: "100%" }}
+          >
+            <Box>
+              <List>
+                <ListItem>
+                  <ListItemIcon>
+                    <Avatar alt={user.displayName} src={user.photoURL} />
+                  </ListItemIcon>
+                  <ListItemText primary={user.displayName}></ListItemText>
+                </ListItem>
+              </List>
+              <TextField
+                id="outlined-basic-email"
+                label="Search"
+                variant="outlined"
+                fullWidth
+              />
+            </Box>
+            <List style={{ overflow: "auto", flexGrow: "1", height: "0px" }}>
+              <Typography>chats</Typography>
+              <ChatsList
+                chats={chats}
+                users={users}
+                uid={user.uid}
+                onClick={(e, id) => {
+                  setSelectedChat(id);
+                }}
+                selectedId={selectedChat?.id}
+              />
+              <Typography>all users</Typography>
+              <UsersList
+                users={users}
+                onClick={(e, id) => {
+                  setSelectedID(id);
+                }}
+                selectedId={selectedId}
+              />
+            </List>
+          </Box>
         </Grid>
         <Grid item xs={9}>
           <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
