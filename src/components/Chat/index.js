@@ -35,13 +35,13 @@ const Chat = ({ user }) => {
   const [selectedChat, setSelectedChat] = useState();
   const [selectedChatId, setSelectedChatId] = useState();
   const { users } = useUsersListen(user);
-  const { getDocId } = useChatUser();
   const { messages, scrollDown, getNextMessages, disableLoadMore } = useChatID(
     selectedChat?.id,
     user
   );
   const { sendMessage } = useSendMessage();
   const { chats } = useChatsListen(user);
+  const { getDocId } = useChatUser(chats);
 
   const selectedUser = users.find((item) => item.id === selectedId);
 
