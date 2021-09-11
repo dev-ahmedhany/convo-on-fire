@@ -8,9 +8,9 @@ import {
   limit,
   startAfter,
   getDocs,
-  setDoc,
   doc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 
 const useChatID = (docID, user) => {
@@ -75,13 +75,12 @@ const useChatID = (docID, user) => {
           oldMessages.push(fullmessage);
         });
 
+      //mark as seen
       const db = getFirestore();
       if (changes.filter((c) => c.type === "added").length > 0) {
-        setDoc(doc(db, "users", user.uid), {
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          lastOnline: serverTimestamp(),
-        });
+        const data = {};
+        data[`seen.${user.uid}`] = serverTimestamp();
+        updateDoc(doc(db, "chats", docID), data);
       }
 
       nextMessages.current = [...nextMessages.current, ...oldMessages];
@@ -103,7 +102,7 @@ const useChatID = (docID, user) => {
       setMessages([...nextMessages.current, ...messages.reverse()]);
       setScrollDown((oldState) => !oldState);
     },
-    [user]
+    [user, docID]
   );
 
   useEffect(() => {

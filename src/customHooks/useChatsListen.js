@@ -13,7 +13,20 @@ const useChatsListen = (user) => {
   const onNext = useCallback((querySnapshot) => {
     const chatArray = [];
     querySnapshot.forEach((doc) => {
-      chatArray.push({ id: doc.id, ...doc.data() });
+      const data = doc.data();
+      const finalData = {
+        id: doc.id,
+        type: data.type,
+        members: data.members,
+        seen: data.seen || {},
+      };
+      for (const [key, value] of Object.entries(finalData.seen)) {
+        if (value) {
+          finalData.seen[key] = value.toDate();
+        }
+      }
+      console.log("finalData", finalData);
+      chatArray.push(finalData);
     });
     setChats(chatArray);
   }, []);

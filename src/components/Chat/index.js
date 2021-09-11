@@ -48,6 +48,12 @@ const Chat = ({ user }) => {
     setSelectedChat(doc);
   }, [doc]);
 
+  useEffect(() => {
+    if (selectedChat?.id && chats.length > 0) {
+      setSelectedChat(chats.find((chat) => chat.id === selectedChat.id));
+    }
+  }, [chats, selectedChat?.id]);
+
   return (
     <Box display="flex" style={{ height: "100%" }}>
       <Grid container component={Paper}>
@@ -125,7 +131,7 @@ const Chat = ({ user }) => {
             >
               <ChatWrapper
                 data={messages}
-                members={selectedChat?.members}
+                chat={selectedChat}
                 userId={user.uid}
                 users={users}
                 scrollDown={scrollDown}
