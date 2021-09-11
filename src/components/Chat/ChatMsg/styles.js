@@ -22,7 +22,7 @@ export const styles = ({ palette, spacing }) => {
     reply: {
       color: palette.common.white,
       "&:hover": {
-        color: palette.grey[500],
+        color: palette.grey[600],
       },
     },
     leftRow: {
@@ -37,6 +37,7 @@ export const styles = ({ palette, spacing }) => {
       marginBottom: 4,
       display: "inline-block",
       wordBreak: "break-word",
+      whiteSpace: "pre-wrap",
       fontFamily: [
         "-apple-system",
         "BlinkMacSystemFont",

@@ -10,6 +10,7 @@ const ChatWrapper = ({
   getNextMessages,
   disableLoadMore,
   chat,
+  setReply,
 }) => {
   const [messages, setMessages] = useState([]);
   const scrollableListRef = useRef(null);
@@ -138,6 +139,7 @@ const ChatWrapper = ({
                 date={msg.date}
                 avatar={msg.avatar}
                 messages={msg.messages}
+                setReply={setReply}
               />
             )
           )}

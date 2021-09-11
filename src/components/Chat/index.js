@@ -43,6 +43,8 @@ const Chat = ({ user }) => {
   const { chats } = useChatsListen(user);
   const { getDocId } = useChatUser(chats);
 
+  const [reply, setReply] = useState();
+
   const selectedUser = users.find((item) => item.id === selectedId);
 
   useEffect(() => {
@@ -136,6 +138,7 @@ const Chat = ({ user }) => {
                 scrollDown={scrollDown}
                 getNextMessages={getNextMessages}
                 disableLoadMore={disableLoadMore}
+                setReply={setReply}
               />
               <Divider />
               <ChatInput
@@ -144,6 +147,8 @@ const Chat = ({ user }) => {
                 }}
                 handleTyping={() => {}}
                 disabled={!selectedChat}
+                reply={reply}
+                setReply={setReply}
               />
             </div>
           </Box>

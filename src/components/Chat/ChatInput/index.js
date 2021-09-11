@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Grid, FilledInput, Fab, InputAdornment } from "@material-ui/core";
-import SendIcon from "@material-ui/icons/Send";
+import {
+  Grid,
+  FilledInput,
+  Fab,
+  InputAdornment,
+  Typography,
+  IconButton,
+  Box,
+} from "@material-ui/core";
+import { Send, Close } from "@material-ui/icons";
 import { useStyles } from "./styles.js";
 
-function ChatInput({ handleTyping, handleSendMessage, disabled }) {
+function ChatInput({
+  handleTyping,
+  handleSendMessage,
+  disabled,
+  reply,
+  setReply,
+}) {
   const classes = useStyles();
 
   const [text, setText] = useState("");
@@ -26,6 +40,30 @@ function ChatInput({ handleTyping, handleSendMessage, disabled }) {
   return (
     <Grid container className={classes.bottomSender}>
       <Grid item xs={12}>
+        {reply && (
+          <Box display="flex" flexGrow="1" justifyContent="space-between">
+            <Box>
+              <Typography variant="body1">
+                {`replying to `}
+                <b>{reply.name || "yourself"}</b>
+              </Typography>
+              <Typography variant="body2">
+                {reply.text.length > 72
+                  ? reply.text.substring(0, 72) + "..."
+                  : reply.text}
+              </Typography>
+            </Box>
+            <IconButton
+              onClick={() => {
+                setReply();
+              }}
+              color="primary"
+              aria-label="close reply"
+            >
+              <Close />
+            </IconButton>
+          </Box>
+        )}
         <FilledInput
           className={classes.textBox}
           required
@@ -53,7 +91,7 @@ function ChatInput({ handleTyping, handleSendMessage, disabled }) {
                 onClick={handleSend}
                 disabled={disabled}
               >
-                <SendIcon />
+                <Send />
               </Fab>
             </InputAdornment>
           }

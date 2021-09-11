@@ -1,7 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "clsx";
-import { Avatar, Tooltip, Typography, Grid, Box } from "@material-ui/core";
+import {
+  Avatar,
+  Tooltip,
+  Typography,
+  Grid,
+  Box,
+  IconButton,
+} from "@material-ui/core";
 import ReplyIcon from "@material-ui/icons/Reply";
 
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -19,6 +26,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
     GridItemProps,
     AvatarProps,
     getTypographyProps,
+    setReply,
   }) => {
     const attachClass = (index) => {
       if (index === 0) {
@@ -61,7 +69,14 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                         flexDirection={side === "right" ? "row" : "row-reverse"}
                       >
                         <Box flexGrow={1} className={classes.reply}>
-                          <ReplyIcon></ReplyIcon>
+                          <IconButton
+                            onClick={() => {
+                              setReply({ id: msg.id, text: msg.text, name });
+                            }}
+                            color="inherit"
+                          >
+                            <ReplyIcon />
+                          </IconButton>
                         </Box>
                         <Tooltip
                           //prevent scrolling bug
