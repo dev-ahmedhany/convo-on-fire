@@ -74,6 +74,11 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                               setReply({ id: msg.id, text: msg.text, name });
                             }}
                             color="inherit"
+                            style={{
+                              width: "20px",
+                              height: "20px",
+                              marginBottom: "5px",
+                            }}
                           >
                             <ReplyIcon />
                           </IconButton>
@@ -110,7 +115,8 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                             {...TypographyProps}
                             className={cx(
                               classes.msg,
-                              classes[`${side}${msg.date ? "" : "Sending"}`],
+                              classes[side],
+                              { [classes.sending]: !msg.date },
                               attachClass(i),
                               TypographyProps.className
                             )}

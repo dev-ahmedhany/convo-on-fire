@@ -55,7 +55,7 @@ export const styles = ({ palette, spacing }) => {
     left: {
       borderTopRightRadius: radius,
       borderBottomRightRadius: radius,
-      backgroundColor: palette.grey[100],
+      backgroundColor: lighten(rightBgColor, 0.8),
     },
     right: {
       borderTopLeftRadius: radius,
@@ -63,11 +63,11 @@ export const styles = ({ palette, spacing }) => {
       backgroundColor: rightBgColor,
       color: palette.common.white,
     },
-    rightSending: {
-      borderTopLeftRadius: radius,
-      borderBottomLeftRadius: radius,
+    sending: {
       backgroundColor: lighten(rightBgColor, 0.5),
-      color: palette.common.white,
+    },
+    msgReply: {
+      backgroundColor: lighten(rightBgColor, 0.9),
     },
     leftFirst: {
       borderTopLeftRadius: radius,
