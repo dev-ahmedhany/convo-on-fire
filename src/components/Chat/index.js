@@ -142,8 +142,8 @@ const Chat = ({ user }) => {
               />
               <Divider />
               <ChatInput
-                handleSendMessage={(msg) => {
-                  sendMessage(msg, user.uid, selectedChat.id);
+                handleSendMessage={(msg, reply) => {
+                  sendMessage(msg, user.uid, selectedChat.id, reply);
                 }}
                 handleTyping={() => {}}
                 disabled={!selectedChat}

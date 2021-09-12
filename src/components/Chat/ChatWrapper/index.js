@@ -55,7 +55,9 @@ const ChatWrapper = ({
         seen,
         name: sender?.displayName,
         avatar: sender?.photoURL,
-        messages: [{ text: msg.message, date: msg.date, id: msg.id }],
+        messages: [
+          { text: msg.message, date: msg.date, id: msg.id, reply: msg.reply },
+        ],
         side: userId === msg.sentBy ? "right" : "left",
       };
     };
@@ -82,6 +84,7 @@ const ChatWrapper = ({
                 text: msg.message,
                 date: msg.date,
                 id: msg.id,
+                reply: msg.reply,
               });
             } else {
               msgs.push(getMessageObject(msg));
@@ -135,6 +138,7 @@ const ChatWrapper = ({
                 key={msg.id}
                 side={msg.side}
                 name={msg.name}
+                sentBy={msg.sentBy}
                 seen={msg.seen}
                 date={msg.date}
                 avatar={msg.avatar}

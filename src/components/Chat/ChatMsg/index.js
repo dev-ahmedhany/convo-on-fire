@@ -20,6 +20,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
     avatar,
     seen,
     name,
+    sentBy,
     messages,
     side,
     GridContainerProps,
@@ -71,7 +72,15 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                         <Box flexGrow={1} className={classes.reply}>
                           <IconButton
                             onClick={() => {
-                              setReply({ id: msg.id, text: msg.text, name });
+                              setReply({
+                                id: msg.id,
+                                sentBy,
+                                name: name ? name : "yourself",
+                                text:
+                                  msg.text.length > 72
+                                    ? msg.text.substring(0, 72) + "..."
+                                    : msg.text,
+                              });
                             }}
                             color="inherit"
                             style={{
@@ -110,19 +119,38 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                           }
                           placement={"left"}
                         >
-                          <Typography
-                            align={"left"}
-                            {...TypographyProps}
-                            className={cx(
-                              classes.msg,
-                              classes[side],
-                              { [classes.sending]: !msg.date },
-                              attachClass(i),
-                              TypographyProps.className
+                          <Box display="flex" flexDirection="column">
+                            {msg.reply && (
+                              <Box>
+                                <Typography
+                                  align={"left"}
+                                  {...TypographyProps}
+                                  className={cx(
+                                    classes.msg,
+                                    classes[side],
+                                    classes.msgReply,
+                                    attachClass(i),
+                                    TypographyProps.className
+                                  )}
+                                >
+                                  {msg.reply.text}
+                                </Typography>
+                              </Box>
                             )}
-                          >
-                            {msg.text}
-                          </Typography>
+                            <Typography
+                              align={"left"}
+                              {...TypographyProps}
+                              className={cx(
+                                classes.msg,
+                                classes[side],
+                                { [classes.sending]: !msg.date },
+                                attachClass(i),
+                                TypographyProps.className
+                              )}
+                            >
+                              {msg.text}
+                            </Typography>
+                          </Box>
                         </Tooltip>
                       </Box>
                     </div>

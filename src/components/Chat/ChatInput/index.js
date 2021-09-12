@@ -26,8 +26,14 @@ function ChatInput({
 
   const handleSend = () => {
     if (text !== "") {
-      handleSendMessage(text.toString());
+      handleSendMessage(
+        text.toString(),
+        reply
+          ? { text: reply.text, id: reply.id, sentBy: reply.sentBy }
+          : undefined
+      );
       setText("");
+      setReply();
       inputRef.current.focus();
     }
   };
@@ -47,13 +53,9 @@ function ChatInput({
             <Box>
               <Typography variant="body1">
                 {`replying to `}
-                <b>{reply.name || "yourself"}</b>
+                <b>{reply.name}</b>
               </Typography>
-              <Typography variant="body2">
-                {reply.text.length > 72
-                  ? reply.text.substring(0, 72) + "..."
-                  : reply.text}
-              </Typography>
+              <Typography variant="body2">{reply.text}</Typography>
             </Box>
             <IconButton
               onClick={() => {

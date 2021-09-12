@@ -68,6 +68,9 @@ export const styles = ({ palette, spacing }) => {
     },
     msgReply: {
       backgroundColor: lighten(rightBgColor, 0.9),
+      marginBottom: "-10px",
+      fontSize: "13px",
+      color: palette.text.primary,
     },
     leftFirst: {
       borderTopLeftRadius: radius,

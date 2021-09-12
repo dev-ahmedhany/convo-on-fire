@@ -7,13 +7,17 @@ import {
 } from "firebase/firestore";
 
 const useSendMessage = () => {
-  const sendMessage = useCallback(async (msg, uid, docID) => {
-    const db = getFirestore();
-    await addDoc(collection(db, "messages", docID, "messages"), {
+  const sendMessage = useCallback(async (msg, uid, docID, reply) => {
+    const message = {
       sentAt: serverTimestamp(),
       sentBy: uid,
       message: msg,
-    });
+    };
+    if (reply) {
+      message.reply = reply;
+    }
+    const db = getFirestore();
+    await addDoc(collection(db, "messages", docID, "messages"), message);
   }, []);
 
   return { sendMessage };
