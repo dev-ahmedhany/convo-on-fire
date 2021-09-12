@@ -50,6 +50,7 @@ const Chat = ({ user }) => {
   useEffect(() => {
     if (selectedChatId && chats.length > 0) {
       setSelectedChat(chats.find((chat) => chat.id === selectedChatId));
+      setReply();
     }
   }, [chats, selectedChatId]);
 
