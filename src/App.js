@@ -7,13 +7,12 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Badge,
   MenuItem,
   Menu,
   Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { AccountCircle, Notifications } from "@material-ui/icons";
+import { AccountCircle } from "@material-ui/icons";
 import { signOut } from "firebase/auth";
 import useAuthState from "./customHooks/useAuthState";
 import Login from "./pages/Login";
@@ -67,11 +66,6 @@ function App() {
                           Convo On Fire
                         </Typography>
                         <div className={classes.grow} />
-                        <IconButton aria-label="notifications" color="inherit">
-                          <Badge badgeContent={17} color="secondary">
-                            <Notifications />
-                          </Badge>
-                        </IconButton>
                         <IconButton
                           edge="end"
                           aria-label="account of current user"
