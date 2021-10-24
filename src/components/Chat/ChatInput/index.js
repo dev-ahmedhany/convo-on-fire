@@ -8,8 +8,8 @@ import {
   Typography,
   IconButton,
   Box,
-} from "@material-ui/core";
-import { Send, Close } from "@material-ui/icons";
+} from "@mui/material";
+import { Send, Close } from "@mui/icons-material";
 import { useStyles } from "./styles.js";
 
 function ChatInput({
@@ -63,7 +63,7 @@ function ChatInput({
               }}
               color="primary"
               aria-label="close reply"
-            >
+              size="large">
               <Close />
             </IconButton>
           </Box>

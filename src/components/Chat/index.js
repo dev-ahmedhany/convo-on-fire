@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChatWrapper from "./ChatWrapper";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Typography,
   Paper,
@@ -13,7 +13,7 @@ import {
   ListItemIcon,
   ListItemText,
   Avatar,
-} from "@material-ui/core";
+} from "@mui/material";
 import ChatInput from "./ChatInput";
 import UsersList from "./UsersList";
 import useUsersListen from "../../customHooks/useUsersListen";

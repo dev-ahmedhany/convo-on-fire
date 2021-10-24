@@ -8,10 +8,10 @@ import {
   Grid,
   Box,
   IconButton,
-} from "@material-ui/core";
-import ReplyIcon from "@material-ui/icons/Reply";
+} from "@mui/material";
+import ReplyIcon from "@mui/icons-material/Reply";
 
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from '@mui/styles/withStyles';
 import { styles } from "./styles";
 
 const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
@@ -88,7 +88,7 @@ const ChatMsg = withStyles(styles, { name: "ChatMsg" })(
                               height: "20px",
                               marginBottom: "5px",
                             }}
-                          >
+                            size="large">
                             <ReplyIcon />
                           </IconButton>
                         </Box>

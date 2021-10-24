@@ -1,4 +1,4 @@
-import { Button, Paper, Typography } from "@material-ui/core";
+import { Button, Paper, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import ChatMsg from "../ChatMsg";
 

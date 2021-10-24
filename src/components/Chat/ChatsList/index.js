@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
   Avatar,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const ChatsList = ({ chats, onClick, selectedId, uid, users }) => {
   return (
