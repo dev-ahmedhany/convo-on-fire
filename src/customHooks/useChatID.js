@@ -26,7 +26,7 @@ const useChatID = (docID, user) => {
       loadingNextMessages.current = true;
       const db = getFirestore();
       const q = query(
-        collection(db, "messages", docID, "messages"),
+        collection(db, "chats", docID, "messages"),
         orderBy("sentAt", "desc"),
         startAfter(lastDoc.current),
         limit(20)
@@ -112,7 +112,7 @@ const useChatID = (docID, user) => {
       setDisableLoadMore(false);
       const db = getFirestore();
       const q = query(
-        collection(db, "messages", docID, "messages"),
+        collection(db, "chats", docID, "messages"),
         orderBy("sentAt", "desc"),
         limit(20)
       );

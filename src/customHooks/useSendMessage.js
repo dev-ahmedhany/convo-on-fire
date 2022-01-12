@@ -17,7 +17,7 @@ const useSendMessage = () => {
       message.reply = reply;
     }
     const db = getFirestore();
-    await addDoc(collection(db, "messages", docID, "messages"), message);
+    await addDoc(collection(db, "chats", docID, "messages"), message);
   }, []);
 
   return { sendMessage };
