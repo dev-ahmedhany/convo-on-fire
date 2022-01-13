@@ -13,25 +13,28 @@ import {
   Box,
   adaptV4Theme,
 } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { AccountCircle } from "@mui/icons-material";
 import { signOut } from "firebase/auth";
 import useAuthState from "./customHooks/useAuthState";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 
-const theme = createTheme(adaptV4Theme({
-  overrides: {
-    MuiCssBaseline: {
-      "@global": {
-        body: {
-          backgroundImage: "linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)",
-          backgroundAttachment: "fixed",
+const theme = createTheme(
+  adaptV4Theme({
+    overrides: {
+      MuiCssBaseline: {
+        "@global": {
+          body: {
+            backgroundImage:
+              "linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)",
+            backgroundAttachment: "fixed",
+          },
         },
       },
     },
-  },
-}));
+  })
+);
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -76,7 +79,8 @@ function App() {
                             aria-haspopup="true"
                             onClick={handleProfileMenuOpen}
                             color="inherit"
-                            size="large">
+                            size="large"
+                          >
                             <AccountCircle />
                           </IconButton>
                         </Toolbar>
@@ -86,7 +90,10 @@ function App() {
                         anchorOrigin={{ vertical: "top", horizontal: "right" }}
                         id={menuId}
                         keepMounted
-                        transformOrigin={{ vertical: "top", horizontal: "right" }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                       >

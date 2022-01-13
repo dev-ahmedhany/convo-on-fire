@@ -63,7 +63,8 @@ function ChatInput({
               }}
               color="primary"
               aria-label="close reply"
-              size="large">
+              size="large"
+            >
               <Close />
             </IconButton>
           </Box>

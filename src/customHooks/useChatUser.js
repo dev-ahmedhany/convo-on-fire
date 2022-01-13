@@ -1,29 +1,26 @@
 import { useCallback } from "react";
-import {
-  getFirestore,
-  addDoc,
-  serverTimestamp,
-  collection,
-} from "firebase/firestore";
+import { getFirestore, setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 const useChatUser = (chats) => {
   const getDocId = useCallback(
     async (currentUserId, otherUserId) => {
-      const chat = chats.find(
-        (chat) => chat.between === [currentUserId, otherUserId].sort().join(",")
-      );
+      const docId = [currentUserId, otherUserId].sort().join("_");
+      const chat = chats.find((chat) => chat.id === docId);
       if (chat) {
         return chat.id;
       } else {
         const db = getFirestore();
-        const docRef = await addDoc(collection(db, "chats"), {
+
+        setDoc(doc(db, "chats", docId), {
           createdAt: serverTimestamp(),
           createdBy: currentUserId,
-          type: 1,
           members: [otherUserId, currentUserId],
-          between: [otherUserId, currentUserId].sort().join(","),
+          messagesCount: 0,
+          lastMessage: { timeStamp: serverTimestamp() },
+        }).catch((error) => {
+          console.log("createChat", error);
         });
-        return docRef.id;
+        return docId;
       }
     },
     [chats]

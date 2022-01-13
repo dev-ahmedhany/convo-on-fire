@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChatWrapper from "./ChatWrapper";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import {
   Typography,
   Paper,

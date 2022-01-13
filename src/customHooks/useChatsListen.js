@@ -5,6 +5,8 @@ import {
   query,
   where,
   onSnapshot,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 
 const useChatsListen = (user) => {
@@ -16,10 +18,8 @@ const useChatsListen = (user) => {
       const data = doc.data();
       const finalData = {
         id: doc.id,
-        type: data.type,
         members: data.members,
         seen: data.seen || {},
-        between: data.between,
       };
       for (const [key, value] of Object.entries(finalData.seen)) {
         if (value) {
@@ -36,9 +36,13 @@ const useChatsListen = (user) => {
       const db = getFirestore();
       const q = query(
         collection(db, "chats"),
-        where("members", "array-contains", user.uid)
+        where("members", "array-contains", user.uid),
+        orderBy("lastMessage.timeStamp", "desc"),
+        limit(20)
       );
-      return onSnapshot(q, onNext,(error)=>{console.log("chats",error);});
+      return onSnapshot(q, onNext, (error) => {
+        console.log("chats", error.message);
+      });
     }
   }, [user, onNext]);
 

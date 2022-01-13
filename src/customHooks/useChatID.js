@@ -31,30 +31,32 @@ const useChatID = (docID, user) => {
         startAfter(lastDoc.current),
         limit(20)
       );
-      getDocs(q).then((querySnapshot) => {
-        if (!querySnapshot.empty) {
-          lastDoc.current = querySnapshot.docs[querySnapshot.docs.length - 1];
-          const messages = [];
-          querySnapshot.forEach((doc) => {
-            const msg = doc.data();
-            const fullmessage = {
-              id: doc.id,
-              date: msg.sentAt.toDate(),
-              ...msg,
-            };
-            messages.push(fullmessage);
-          });
-          nextMessages.current = [
-            ...messages.reverse(),
-            ...nextMessages.current,
-          ];
-          setMessages((oldMessages) => [...messages, ...oldMessages]);
-        } else {
-          setDisableLoadMore(true);
-        }
-      }).catch((error)=>{
-        console.log("useChatID",error);
-      });
+      getDocs(q)
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            lastDoc.current = querySnapshot.docs[querySnapshot.docs.length - 1];
+            const messages = [];
+            querySnapshot.forEach((doc) => {
+              const msg = doc.data();
+              const fullmessage = {
+                id: doc.id,
+                date: msg.sentAt.toDate(),
+                ...msg,
+              };
+              messages.push(fullmessage);
+            });
+            nextMessages.current = [
+              ...messages.reverse(),
+              ...nextMessages.current,
+            ];
+            setMessages((oldMessages) => [...messages, ...oldMessages]);
+          } else {
+            setDisableLoadMore(true);
+          }
+        })
+        .catch((error) => {
+          console.log("useChatID", error);
+        });
       loadingNextMessages.current = false;
     }
   }, [docID]);
@@ -81,7 +83,7 @@ const useChatID = (docID, user) => {
       const db = getFirestore();
       if (changes.filter((c) => c.type === "added").length > 0) {
         const data = {};
-        data[`seen.${user.uid}`] = serverTimestamp();
+        data[`seen_${user.uid}`] = serverTimestamp();
         updateDoc(doc(db, "chats", docID), data);
       }
 
@@ -118,7 +120,9 @@ const useChatID = (docID, user) => {
         orderBy("sentAt", "desc"),
         limit(20)
       );
-      return onSnapshot(q, onNext,(error)=>{console.log("messages",error);});
+      return onSnapshot(q, onNext, (error) => {
+        console.log("messages", error);
+      });
     }
   }, [docID, onNext]);
 
