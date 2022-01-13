@@ -52,6 +52,8 @@ const useChatID = (docID, user) => {
         } else {
           setDisableLoadMore(true);
         }
+      }).catch((error)=>{
+        console.log("useChatID",error);
       });
       loadingNextMessages.current = false;
     }
@@ -116,7 +118,7 @@ const useChatID = (docID, user) => {
         orderBy("sentAt", "desc"),
         limit(20)
       );
-      return onSnapshot(q, onNext);
+      return onSnapshot(q, onNext,(error)=>{console.log("messages",error);});
     }
   }, [docID, onNext]);
 

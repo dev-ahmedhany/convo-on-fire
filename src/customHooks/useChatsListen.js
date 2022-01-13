@@ -38,7 +38,7 @@ const useChatsListen = (user) => {
         collection(db, "chats"),
         where("members", "array-contains", user.uid)
       );
-      return onSnapshot(q, onNext);
+      return onSnapshot(q, onNext,(error)=>{console.log("chats",error);});
     }
   }, [user, onNext]);
 
