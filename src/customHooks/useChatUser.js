@@ -16,7 +16,7 @@ const useChatUser = (chats) => {
           createdBy: currentUserId,
           members: [otherUserId, currentUserId],
           messagesCount: 0,
-          lastMessage: { timeStamp: serverTimestamp() },
+          lastMessage: { sentAt: serverTimestamp() },
         }).catch((error) => {
           console.log("createChat", error);
         });

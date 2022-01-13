@@ -37,7 +37,7 @@ const useChatsListen = (user) => {
       const q = query(
         collection(db, "chats"),
         where("members", "array-contains", user.uid),
-        orderBy("lastMessage.timeStamp", "desc"),
+        orderBy("lastMessage.sentAt", "desc"),
         limit(20)
       );
       return onSnapshot(q, onNext, (error) => {

@@ -1,8 +1,10 @@
 import { useCallback } from "react";
 import {
   getFirestore,
-  addDoc,
   serverTimestamp,
+  increment,
+  writeBatch,
+  doc,
   collection,
 } from "firebase/firestore";
 
@@ -17,7 +19,17 @@ const useSendMessage = () => {
       message.reply = reply;
     }
     const db = getFirestore();
-    await addDoc(collection(db, "chats", docID, "messages"), message);
+    const batch = writeBatch(db);
+    batch.set(doc(collection(db,`chats/${docID}/messages`)), message);
+    batch.update(doc(db, "chats", docID), {
+      messagesCount: increment(1),
+      lastMessage: {
+        sentAt: serverTimestamp(),
+        sentBy: uid,
+        message: msg,
+      },
+    });
+    await batch.commit();
   }, []);
 
   return { sendMessage };
